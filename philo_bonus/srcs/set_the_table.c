@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 void    *monitor_full(void *mytable)
 {
@@ -41,8 +41,8 @@ int prepare_forks_and_ids(t_table *table)
 {
     int i;
     
-    pthread_create(&table->death_monitor, NULL, monitor_death, table);      // unprotected
-    pthread_create(&table->full_monitor, NULL, monitor_full, table);      // unprotected
+    pthread_create(&table->death_monitor, NULL, monitor_death, table);
+    pthread_create(&table->full_monitor, NULL, monitor_full, table);
     i = 0;
     while (i < table->num_seats)
     {

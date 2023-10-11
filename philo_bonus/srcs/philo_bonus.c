@@ -6,7 +6,7 @@ Welcome to GDB Online.
   Code, Compile, Run and Debug online from anywhere in world.
 
 *******************************************************************************/
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 int philocide(t_table *table)
 {

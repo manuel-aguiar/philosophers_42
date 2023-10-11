@@ -1,12 +1,24 @@
-#include "philosophers.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   memcpy.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/11 16:27:05 by codespace         #+#    #+#             */
+/*   Updated: 2023/10/11 16:27:05 by codespace        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo_bonus.h"
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	unsigned char		*ptr;
-	const unsigned char	*ptr2;
+	unsigned char *ptr;
+	const unsigned char *ptr2;
 
-	ptr = (unsigned char*)dst;
-	ptr2 = (unsigned char*)src;
+	ptr = (unsigned char *)dst;
+	ptr2 = (unsigned char *)src;
 	while (n-- > 0)
 		*(ptr++) = *(ptr2++);
 	return (dst);
@@ -14,7 +26,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 
 size_t	ft_strlen(char *str)
 {
-	size_t	i;
+	size_t i;
 
 	i = 0;
 	while (str[i])
@@ -24,8 +36,8 @@ size_t	ft_strlen(char *str)
 
 char	*ft_strdup(char *s)
 {
-	int		len;
-	char	*dest;
+	int len;
+	char *dest;
 
 	len = ft_strlen(s);
 	dest = malloc(sizeof(*dest) * (len + 1));
@@ -38,9 +50,9 @@ char	*ft_strdup(char *s)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char	*new;
-	size_t	len_s1;
-	size_t	len_s2;
+	char *new;
+	size_t len_s1;
+	size_t len_s2;
 
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);

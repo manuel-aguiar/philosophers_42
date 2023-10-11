@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 void	*ft_free_set_null(void *ptr)
 {
@@ -53,9 +53,9 @@ int	is_atoi_positive_and_int(char *str, int *place_res)
 {
 	int	res;
 	int	sign;
-	
-    if (place_res)
-    *place_res = 0;
+
+	if (place_res)
+		*place_res = 0;
 	while (*str && ft_isspace(*str))
 		str++;
 	sign = 1;
@@ -68,9 +68,9 @@ int	is_atoi_positive_and_int(char *str, int *place_res)
 	res = 0;
 	while (*str && ft_isdigit(*str) && atoi_overf(res, *str, &sign))
 		res = res * 10 - '0' + *str++;
-    if (!sign)
-    return (0);
-    if (place_res)
-    *place_res = res;
+	if (!sign)
+		return (0);
+	if (place_res)
+		*place_res = res;
 	return (sign == 1);
 }

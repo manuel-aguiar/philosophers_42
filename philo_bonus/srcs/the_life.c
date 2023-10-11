@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "philo_bonus.h"
 
 static int     the_beginning_of_life(t_table *table, t_philo *philo);
 

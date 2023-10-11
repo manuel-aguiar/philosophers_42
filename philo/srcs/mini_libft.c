@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mini_libft.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/11 16:24:00 by codespace         #+#    #+#             */
+/*   Updated: 2023/10/11 16:24:00 by codespace        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 void	*ft_free_set_null(void *ptr)
@@ -53,9 +65,9 @@ int	is_atoi_positive_and_int(char *str, int *place_res)
 {
 	int	res;
 	int	sign;
-	
-    if (place_res)
-    *place_res = 0;
+
+	if (place_res)
+		*place_res = 0;
 	while (*str && ft_isspace(*str))
 		str++;
 	sign = 1;
@@ -68,9 +80,9 @@ int	is_atoi_positive_and_int(char *str, int *place_res)
 	res = 0;
 	while (*str && ft_isdigit(*str) && atoi_overf(res, *str, &sign))
 		res = res * 10 - '0' + *str++;
-    if (!sign)
-    return (0);
-    if (place_res)
-    *place_res = res;
+	if (!sign)
+		return (0);
+	if (place_res)
+		*place_res = res;
 	return (sign == 1);
 }
