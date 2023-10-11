@@ -8,21 +8,33 @@ Welcome to GDB Online.
 *******************************************************************************/
 #include "philosophers.h"
 
+int philocide(t_table *table)
+{
+    int i;
+
+    i = 0;
+    while (i < table->last_good_philo)
+    {
+        if (table->philo_pids[i])
+        {
+            kill(table->philo_pids[i], SIGKILL);
+            table->philo_pids[i] = 0;
+        }
+        i++;
+    }
+    return (1);
+}
 
 int open_hell_s_kitchen(t_table *table)
 {
-    int i;
-    
     if (table->max_meals == 0)
         return (1);
     sem_wait(table->start_execution);
     table->open_time = milisec_epoch();
     if (!prepare_forks_and_ids(table))
     {
-        i = 0;
-        while (i++ < table->last_good_philo)
-            sem_post(table->exit_signal);
         printf("philo: fork: last good philo %d\n", table->last_good_philo);
+        philocide(table);
         sem_post(table->start_execution);
         return (0);
     }

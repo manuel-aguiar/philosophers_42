@@ -11,6 +11,7 @@
 # include <semaphore.h>
 # include <sys/time.h>
 # include <signal.h>
+# include <string.h>
 # include <unistd.h>
 # include <limits.h>
 # include <stdbool.h>

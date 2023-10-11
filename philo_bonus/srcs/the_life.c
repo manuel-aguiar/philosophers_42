@@ -2,33 +2,8 @@
 
 static int     the_beginning_of_life(t_table *table, t_philo *philo);
 
-/*
-
-char    *pos_int_to_stack_str(int nb, char *buf, int bufsize)
-{
-    int i;
-    int place;
-    
-    i = bufsize - 1;
-    buf[i--] = '\0';
-    if (nb == 0)
-    {
-        buf[i] = '0';
-        return (&buf[i]);
-    }
-    while (nb)
-    {
-        place = (nb % 10) + '0';
-        buf[i--] = place;
-        nb /= 10;
-    }
-    return (&buf[++i]);
-} */
-
 void    *monitor_death_or_full(void *mytable)
 {
-    int     i;
-    int     save_must_exit;
     t_table *table;
     t_philo *philo;
     
@@ -61,27 +36,6 @@ void    *monitor_death_or_full(void *mytable)
     }
     return (NULL);
 }
-
-
-/*
-int     philo_death_semaphore_and_thread(t_table *table, t_philo *philo)
-{
-    char    *start;
-    char    str_id[11];
-    
-    start = pos_int_to_stack_str(philo->my_id, str_id, sizeof(str_id));
-    philo->mydeath_name = ft_strjoin("mydeath_", start);
-    if (!philo->mydeath_name)
-        return (0);
-    philo->mydeath = sem_open(philo->mydeath_name, O_CREAT, 0644, 1);
-    if (pthread_create(&philo->monitor, NULL, monitor_death_or_full, table))
-        clean_table(table, false, EXIT_FAILURE);
-    pthread_detach(philo->monitor);
-    return (1);
-}*/
-
-
-
 
 void    the_life_of_a_philosopher(t_table *table, t_philo *philo)
 {
@@ -139,7 +93,6 @@ static int     the_beginning_of_life(t_table *table, t_philo *philo)
     
     if (pthread_create(&philo->self_monitor, NULL, monitor_death_or_full, table))
         clean_table(table, false, EXIT_FAILURE);
-    //pthread_detach(philo->monitor);
     
     sem_wait(table->check_death);
     philo->last_meal_start = milisec_epoch();

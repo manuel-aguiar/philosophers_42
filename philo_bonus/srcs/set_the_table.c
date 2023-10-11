@@ -1,9 +1,43 @@
 #include "philosophers.h"
 
+void    *monitor_full(void *mytable)
+{
+    t_table *table;
+    int     i;
+
+    table = (t_table *)mytable;
+    i = 0;
+    while (i < table->last_good_philo)
+        sem_wait(table->all_meals);
+    philocide(table);
+    //sem_post(table->exit_signal);
+    return (NULL);
+}
+
+
+void    *monitor_death(void *mytable)
+{
+    t_table *table;
+    //int     i;
+
+    table = (t_table *)mytable;
+    sem_wait(table->exit_signal);
+    philocide(table);
+    //i = 0;
+    //while (i < table->last_good_philo)
+    //    sem_post(table->all_meals);
+    return (NULL);
+}
+
+
+
+
 int prepare_forks_and_ids(t_table *table)
 {
     int i;
     
+    pthread_create(&table->death_monitor, NULL, monitor_death, table);      // unprotected
+    pthread_create(&table->full_monitor, NULL, monitor_full, table);      // unprotected
     i = 0;
     while (i < table->num_seats)
     {
