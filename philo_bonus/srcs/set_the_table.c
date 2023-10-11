@@ -18,10 +18,15 @@ void    *monitor_full(void *mytable)
 void    *monitor_death(void *mytable)
 {
     t_table *table;
+    int     i;
 
     table = (t_table *)mytable;
     sem_wait(table->exit_signal);
     philocide(table);
+    memset(table->philo_pids, '\0', sizeof(*table->philo_pids) * table->num_seats);
+    i = 0;
+    while (i++ < table->last_good_philo)
+        sem_post(table->all_meals);
     return (NULL);
 }
 
