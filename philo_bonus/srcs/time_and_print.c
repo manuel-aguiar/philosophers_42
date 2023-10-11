@@ -17,9 +17,6 @@ int broadcast_life_state(t_table *table, \
         table->philo.cur_time = milisec_epoch();
         time_elapsed = table->philo.cur_time - table->open_time;
     }
-    //sem_wait(table->damn_print);
-    if (!table->philo.died)
-        printf("%-10ld %-5d %s\n", time_elapsed, table->philo.my_id, state);
-    //sem_post(table->damn_print);
+    printf("%-10ld %-5d %s\n", time_elapsed, table->philo.my_id, state);
     return (1);
 }

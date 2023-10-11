@@ -10,18 +10,18 @@
 # include <pthread.h>
 # include <semaphore.h>
 # include <sys/time.h>
-# include <string.h>
+# include <signal.h>
 # include <unistd.h>
 # include <limits.h>
 # include <stdbool.h>
 
 typedef struct  s_philo
 {
-    pthread_t   monitor;
-    pthread_t   wait_signal;
+    pthread_t   self_monitor;
     int         died;
     int         my_id;
     int         meals_i_had;
+    int         must_exit;
     time_t      last_meal_start;
     time_t      cur_time;
 }               t_philo;
@@ -29,13 +29,14 @@ typedef struct  s_philo
 typedef struct      s_table
 {
     t_philo         philo;
+    pthread_t       death_monitor;
+    pthread_t       full_monitor;
     pid_t           *philo_pids;
     sem_t           *forks;
     sem_t           *check_death;
     sem_t           *start_execution;
-    sem_t           *finished_eating;
     sem_t           *exit_signal;
-    sem_t           *damn_print;
+    sem_t           *all_meals;
     bool            init_failed;
     int             last_good_philo;
     time_t          open_time;
@@ -48,9 +49,8 @@ typedef struct      s_table
     char            *semafork_name;
     char            *semadeath_name;
     char            *semaexec_name;
-    char            *semafull_name;
     char            *semaexit_name;
-    char            *semaprint_name;
+    char            *semafull_name;
 }                   t_table;
 
 

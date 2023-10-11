@@ -52,3 +52,9 @@ int main(int ac, char **av)
     clean_table(&table, true, EXIT_SUCCESS);
     return (0);
 }
+
+/*
+
+valgrind --track-fds=yes --trace-children=yes --leak-check=full ./philo_bonus 4 310 200 100
+
+*/

@@ -28,6 +28,7 @@ char    *pos_int_to_stack_str(int nb, char *buf, int bufsize)
 void    *monitor_death_or_full(void *mytable)
 {
     int     i;
+    int     save_must_exit;
     t_table *table;
     t_philo *philo;
     
@@ -36,13 +37,6 @@ void    *monitor_death_or_full(void *mytable)
     while (1)
     {
         sem_wait(table->check_death);
-        //sem_wait(table->damn_print);
-        if (philo->died)
-        {
-            //sem_post(table->damn_print);
-            sem_post(table->check_death);
-            return (NULL);
-        }
         if (!(philo->last_meal_start == 0 \
         || philo->meals_i_had == table->max_meals))
         {
@@ -50,27 +44,15 @@ void    *monitor_death_or_full(void *mytable)
             if (table->cur_time - philo->last_meal_start >= table->to_die)
             {
                 philo->died = 1;
-                //printf("somebody died\n");
-                
-                printf("%-10ld %-5d %s\n", table->cur_time - table->open_time, table->philo.my_id, PRINT_DEATH);
-
-                i = 0;
-                
-                while (i++ < table->last_good_philo)
-                    sem_post(table->exit_signal);
-                //sem_post(table->damn_print);
-                sem_post(table->check_death);
+                broadcast_life_state(table, PRINT_DEATH, table->cur_time - table->open_time);
+                sem_post(table->exit_signal);
                 return (NULL);
             }
-            
         }
-        //sem_post(table->damn_print);
-        
-        sem_post(table->check_death);
-        sem_wait(table->check_death);
         if (philo->meals_i_had == table->max_meals)
         {
             philo->died = 1;
+            sem_post(table->all_meals);
             sem_post(table->check_death);
             return (NULL);
         }
@@ -80,19 +62,7 @@ void    *monitor_death_or_full(void *mytable)
     return (NULL);
 }
 
-void    *waiting_exit_signal(void *mytable)
-{
-    t_table *table;
-    t_philo *philo;
-    //(void)mytable;
-    table = (t_table *)mytable;
-    philo = &table->philo;
-    sem_wait(table->exit_signal);
-    sem_wait(table->check_death);
-    philo->died = 1;
-    sem_post(table->check_death);
-    return (NULL);
-}
+
 /*
 int     philo_death_semaphore_and_thread(t_table *table, t_philo *philo)
 {
@@ -128,6 +98,12 @@ void    the_life_of_a_philosopher(t_table *table, t_philo *philo)
         || !time_to_think(table, philo))
             break ;
     }
+    //printf("philo %d exit loop\n", philo->my_id);
+
+    //pthread_detach(table->philo.monitor);
+    //pthread_detach(table->philo.wait_signal);
+
+    pthread_join(table->philo.self_monitor, NULL);
     clean_table(table, false, EXIT_SUCCESS);
 }
 
@@ -160,13 +136,10 @@ static int     the_beginning_of_life(t_table *table, t_philo *philo)
 {
     sem_wait(table->start_execution);
     sem_post(table->start_execution);
-    if (pthread_create(&philo->wait_signal, NULL, waiting_exit_signal, table))
-        clean_table(table, false, EXIT_FAILURE);
-    pthread_detach(philo->wait_signal);
     
-    if (pthread_create(&philo->monitor, NULL, monitor_death_or_full, table))
+    if (pthread_create(&philo->self_monitor, NULL, monitor_death_or_full, table))
         clean_table(table, false, EXIT_FAILURE);
-    pthread_detach(philo->monitor);
+    //pthread_detach(philo->monitor);
     
     sem_wait(table->check_death);
     philo->last_meal_start = milisec_epoch();
