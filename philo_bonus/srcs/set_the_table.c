@@ -9,7 +9,9 @@ void    *monitor_full(void *mytable)
     i = 0;
     while (i++ < table->last_good_philo)
         sem_wait(table->all_meals);
+    sem_wait(table->start_execution);
     memset(table->philo_pids, '\0', sizeof(*table->philo_pids) * table->num_seats);
+    sem_post(table->start_execution);
     sem_post(table->exit_signal);
     return (NULL);
 }
@@ -23,7 +25,9 @@ void    *monitor_death(void *mytable)
     table = (t_table *)mytable;
     sem_wait(table->exit_signal);
     philocide(table);
+    sem_wait(table->start_execution);
     memset(table->philo_pids, '\0', sizeof(*table->philo_pids) * table->num_seats);
+    sem_post(table->start_execution);
     i = 0;
     while (i++ < table->last_good_philo)
         sem_post(table->all_meals);
