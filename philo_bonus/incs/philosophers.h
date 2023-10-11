@@ -10,8 +10,8 @@
 # include <pthread.h>
 # include <semaphore.h>
 # include <sys/time.h>
-# include <signal.h>
 # include <string.h>
+# include <signal.h>
 # include <unistd.h>
 # include <limits.h>
 # include <stdbool.h>
@@ -76,6 +76,7 @@ enum e_state
 /* philosophers.c */
 int     a_philosopher_has_died(t_table *table);
 int     all_philos_are_full(t_table *table);
+int     philocide(t_table *table);
 int     open_hell_s_kitchen(t_table *table);
 
 /* set_the_table.c */
