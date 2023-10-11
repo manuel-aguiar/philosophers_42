@@ -24,8 +24,8 @@ void    *monitor_death(void *mytable)
 
     table = (t_table *)mytable;
     sem_wait(table->exit_signal);
-    philocide(table);
     sem_wait(table->start_execution);
+    philocide(table);
     memset(table->philo_pids, '\0', sizeof(*table->philo_pids) * table->num_seats);
     sem_post(table->start_execution);
     i = 0;
