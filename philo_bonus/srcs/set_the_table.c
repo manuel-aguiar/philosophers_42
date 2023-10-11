@@ -7,10 +7,10 @@ void    *monitor_full(void *mytable)
 
     table = (t_table *)mytable;
     i = 0;
-    while (i < table->last_good_philo)
+    while (i++ < table->last_good_philo)
         sem_wait(table->all_meals);
-    philocide(table);
-    //sem_post(table->exit_signal);
+    memset(table->philo_pids, '\0', sizeof(*table->philo_pids) * table->num_seats);
+    sem_post(table->exit_signal);
     return (NULL);
 }
 
@@ -18,14 +18,10 @@ void    *monitor_full(void *mytable)
 void    *monitor_death(void *mytable)
 {
     t_table *table;
-    //int     i;
 
     table = (t_table *)mytable;
     sem_wait(table->exit_signal);
     philocide(table);
-    //i = 0;
-    //while (i < table->last_good_philo)
-    //    sem_post(table->all_meals);
     return (NULL);
 }
 
@@ -74,7 +70,10 @@ int prepare_table(t_table *table, int ac, char **av)
     table->exit_signal = NULL;
     table->all_meals = NULL;
     table->philo_pids = NULL;
-    
+    table->death_monitor = 0;
+    table->full_monitor = 0;
+
+
     table->semafork_name = ft_strdup("semaforks");
     table->semadeath_name = ft_strdup("semadeath");
     table->semaexec_name = ft_strdup("semaexec");
@@ -126,35 +125,33 @@ int prepare_table(t_table *table, int ac, char **av)
 int clean_table(t_table *table, bool wait, int exit_status)
 {
     int i;
-    int j;
-    int status;
-    int sent;
     
+
     //printf("%-10ld  philo %d starting cleanup \n", milisec_epoch() - table->open_time, table->philo.my_id);
     if (table->philo_pids)
     {
         if (wait)
         {
+            //printf("begin waiting\n");
+            if (table->death_monitor)
+                pthread_join(table->death_monitor, NULL);
+            //printf("received death\n");
+            if (table->full_monitor)
+                pthread_join(table->full_monitor, NULL);
+            //printf("received full\n");
+            //printf("joined threads\n"); 
             i = 0;
-            sent = 0;
             //printf("cleaning of philo %d posting exit signals\n", table->philo.my_id);
             while (i < table->last_good_philo)
             {
-                
-                waitpid(table->philo_pids[i++], &status, 0);
-                if (WIFEXITED(status) && WEXITSTATUS(status) != 0 && !sent)
+                if (table->philo_pids[i])
                 {
-                    sent = 1;
-                    j = 0;
-                    while (j++ < table->last_good_philo)
-                        sem_post(table->exit_signal);
+                    //printf("waiting on pid %d\n", table->philo_pids[i]);
+                    waitpid(table->philo_pids[i], NULL, 0);
+                    //printf("received pid %d\n", table->philo_pids[i]);
+                    table->philo_pids[i] = 0;
                 }
-                if (!sent)
-                {
-                    j = 0;
-                    while (j++ < table->last_good_philo)
-                        sem_post(table->exit_signal);                    
-                }
+                i++;
                 //sem_post(table->exit_signal);
                 //printf("%-10ld son %d arrived\n", milisec_epoch() - table->open_time, i);
             }

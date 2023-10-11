@@ -28,6 +28,7 @@ void    *monitor_death_or_full(void *mytable)
         {
             philo->died = 1;
             sem_post(table->all_meals);
+            //printf("philo %d posting full\n", philo->my_id);
             sem_post(table->check_death);
             return (NULL);
         }
@@ -58,6 +59,7 @@ void    the_life_of_a_philosopher(t_table *table, t_philo *philo)
     //pthread_detach(table->philo.wait_signal);
 
     pthread_join(table->philo.self_monitor, NULL);
+    //printf("philo %d exit loop\n", philo->my_id);
     clean_table(table, false, EXIT_SUCCESS);
 }
 
@@ -93,7 +95,8 @@ static int     the_beginning_of_life(t_table *table, t_philo *philo)
     
     if (pthread_create(&philo->self_monitor, NULL, monitor_death_or_full, table))
         clean_table(table, false, EXIT_FAILURE);
-    
+    table->death_monitor = 0;
+    table->full_monitor = 0;
     sem_wait(table->check_death);
     philo->last_meal_start = milisec_epoch();
     sem_post(table->check_death);
