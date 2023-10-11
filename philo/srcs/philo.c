@@ -12,14 +12,15 @@ int a_philosopher_has_died(t_table *table)
 {
     int         i;
     
-    table->cur_time = milisec_epoch();
     pthread_mutex_lock(&table->check_death);
+    table->cur_time = milisec_epoch();
     i = 0; 
     while (i < table->num_seats)
     {
         if (!(table->philos[i].last_meal_start == 0 \
         || table->philos[i].meals_i_had == table->max_meals))
         {
+            
             if (table->cur_time - table->philos[i].last_meal_start \
             >= table->to_die)
             {
