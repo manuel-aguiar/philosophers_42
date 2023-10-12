@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 11:48:50 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 12:08:42 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	prepare_forks_and_ids(t_table *table)
 	int	i;
 
 	table->philo.self_monitor = 0;
-	table->philo.died = 0;
+	table->philo.died = (table->to_die == 0);
 	table->philo.last_meal_start = 0;
 	table->philo.meals_i_had = 0;
 	i = 0;

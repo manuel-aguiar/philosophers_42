@@ -18,6 +18,7 @@ OBJ_PATH	=		objs
 SRC_FILES	=		philo_bonus.c		\
 					set_the_table.c		\
 					the_life.c			\
+					the_death.c			\
 					the_routine.c		\
 					the_wait.c			\
 					time_and_print.c	\

@@ -6,55 +6,13 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 12:05:29 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 12:20:57 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
 static int	the_beginning_of_life(t_table *table, t_philo *philo);
-
-int	i_am_dead(t_table *table, t_philo *philo)
-{
-	if (!(philo->last_meal_start == 0
-			|| philo->meals_i_had == table->max_meals))
-	{
-		philo->cur_time = milisec_epoch();
-		if (philo->cur_time - philo->last_meal_start >= table->to_die)
-		{
-			philo->died = 1;
-			broadcast_life_state(table, PRINT_DEATH, philo->cur_time
-				- table->open_time);
-			goodbye_everybody();
-			return (1);
-		}
-	}
-	return (0);
-}
-
-void	*monitor_death_or_full(void *mytable)
-{
-	t_table	*table;
-	t_philo	*philo;
-
-	table = (t_table *)mytable;
-	philo = &table->philo;
-	while (1)
-	{
-		sem_wait(table->check_death);
-		if (i_am_dead(table, philo))
-			return (NULL);
-		if (philo->meals_i_had == table->max_meals)
-		{
-			philo->died = 1;
-			sem_post(table->check_death);
-			return (NULL);
-		}
-		sem_post(table->check_death);
-		usleep(TACTICAL_WAIT);
-	}
-	return (NULL);
-}
 
 void	the_life_of_a_philosopher(t_table *table, t_philo *philo)
 {

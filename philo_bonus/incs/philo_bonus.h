@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 10:45:30 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 12:19:57 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,13 @@ int				clean_table(t_table *table, bool wait, int exit_status);
 int				prepare_forks_and_ids(t_table *table);
 
 /* the_life.c */
-void			goodbye_everybody(void);
+
 void			the_life_of_a_philosopher(t_table *table, t_philo *philo);
 void			the_life_of_a_lonely_philo(t_table *table, t_philo *philo);
+
+/* the death.c */
+void			*monitor_death_or_full(void *mytable);
+void			goodbye_everybody(void);
 
 /* the_routine.c */
 int				take_first_fork(t_table *table, t_philo *philo);

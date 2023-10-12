@@ -6,19 +6,11 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:32:06 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 11:53:15 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 12:20:04 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-void	goodbye_everybody(void)
-{
-	sem_unlink(SEMAFORK);
-	sem_unlink(SEMADEATH);
-	sem_unlink(SEMAEXEC);
-	kill(0, SIGKILL);
-}
 
 int	open_hell_s_kitchen(t_table *table)
 {
