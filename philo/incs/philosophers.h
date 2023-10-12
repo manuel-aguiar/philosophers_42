@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:23:49 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/11 16:23:51 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 10:46:57 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int						time_to_think(t_table *table, t_philo *philo);
 time_t					milisec_epoch(void);
 int						broadcast_life_state(t_table *table, t_philo *philo,
 							char *state, time_t time_elapsed);
+int						write_stderr(char *text);
 
 /* mini_libft.c */
 int						is_atoi_positive_and_int(char *str, int *place_res);

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:24:04 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/11 16:26:04 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 10:47:49 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	open_hell_s_kitchen(t_table *table)
 	if (!prepare_threads_and_ids(table))
 	{
 		table->init_failed = 1;
-		printf("philo: pthread: last thread was %d\n", table->last_good_thread);
+		write_stderr("philo: pthread: failed\n");
 		pthread_mutex_unlock(&table->start_execution);
 		return (0);
 	}
@@ -88,12 +88,12 @@ int	main(int ac, char **av)
 
 	if (ac < 5 || ac > 6)
 	{
-		printf("philo: invalid arguments\n");
+		write_stderr("philo: invalid arguments\n");
 		return (0);
 	}
 	if (!prepare_table(&table, ac, av))
 	{
-		printf("philo: syscall failed\n");
+		write_stderr("philo: syscall failed\n");
 		return (0);
 	}
 	open_hell_s_kitchen(&table);

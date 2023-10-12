@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/11 16:26:23 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 10:47:12 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	table_place_forks_and_detectors(t_table *table)
 	if (pthread_mutex_init(&table->start_execution, NULL)
 		|| pthread_mutex_init(&table->check_death, NULL))
 	{
-		printf("mutex failed\n");
+		write_stderr("mutex failed\n");
 		return (clean_table(table));
 	}
 	i = 0;
