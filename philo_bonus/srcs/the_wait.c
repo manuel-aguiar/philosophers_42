@@ -6,30 +6,11 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 10:59:40 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 12:21:46 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-int	philo_sleep(t_table *table, t_philo *philo, time_t end_sleep)
-{
-	while (1)
-	{
-		sem_wait(table->check_death);
-		if (philo->died)
-		{
-			sem_post(table->check_death);
-			return (0);
-		}
-		else
-			sem_post(table->check_death);
-		if (milisec_epoch() >= end_sleep)
-			break ;
-		usleep(TACTICAL_WAIT);
-	}
-	return (1);
-}
 
 int	time_to_eat(t_table *table, t_philo *philo)
 {
