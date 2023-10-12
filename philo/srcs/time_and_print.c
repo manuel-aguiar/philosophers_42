@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:53 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 10:46:16 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 11:42:37 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	broadcast_life_state(t_table *table, t_philo *philo, char *state,
 
 static size_t	ft_strlen(const char *s)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (s[i] != '\0')

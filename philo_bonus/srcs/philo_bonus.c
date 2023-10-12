@@ -6,11 +6,19 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:32:06 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 11:15:25 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 11:53:15 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+void	goodbye_everybody(void)
+{
+	sem_unlink(SEMAFORK);
+	sem_unlink(SEMADEATH);
+	sem_unlink(SEMAEXEC);
+	kill(0, SIGKILL);
+}
 
 int	open_hell_s_kitchen(t_table *table)
 {
@@ -48,7 +56,9 @@ int	main(int ac, char **av)
 
 /*
 
-valgrind --track-fds=yes --trace-children=yes --leak-check=full ./philo_bonus 4 310 200 100
+valgrind --track-fds=yes --trace-children=yes 
+--leak-check=full ./philo_bonus 4 310 200 100
+
 stdbuf -o0 ./philo_bonus 4 400 200 200 10 > test1.txt
 
 
