@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:32:06 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 11:09:11 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 11:15:25 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,7 @@ int	main(int ac, char **av)
 /*
 
 valgrind --track-fds=yes --trace-children=yes --leak-check=full ./philo_bonus 4 310 200 100
+stdbuf -o0 ./philo_bonus 4 400 200 200 10 > test1.txt
+
 
 */
