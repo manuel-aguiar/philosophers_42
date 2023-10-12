@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 10:23:42 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 10:28:16 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct s_philo
 	int			died;
 	int			my_id;
 	int			meals_i_had;
-	int			must_exit;
 	time_t		last_meal_start;
 	time_t		cur_time;
 }				t_philo;
@@ -58,10 +57,9 @@ typedef struct s_table
 	sem_t		*forks;
 	sem_t		*check_death;
 	sem_t		*start_execution;
-	bool		init_failed;
-	int			last_good_philo;
 	time_t		open_time;
 	time_t		cur_time;
+	int			last_good_philo;
 	int			to_die;
 	int			to_eat;
 	int			to_sleep;

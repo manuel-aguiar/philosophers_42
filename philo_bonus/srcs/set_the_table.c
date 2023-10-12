@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 10:05:14 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 10:28:55 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	prepare_forks_and_ids(t_table *table)
 		if (table->philo_pids[i] == -1)
 		{
 			table->last_good_philo = i;
-			table->init_failed = true;
 			return (0);
 		}
 		if (!table->philo_pids[i])
@@ -37,7 +36,6 @@ int	prepare_forks_and_ids(t_table *table)
 
 int	prepare_table(t_table *table, int ac, char **av)
 {
-	table->init_failed = false;
 	table->max_meals = -1;
 	if (!is_atoi_positive_and_int(av[1], &table->num_seats)
 		|| !is_atoi_positive_and_int(av[2], &table->to_die)
@@ -45,9 +43,6 @@ int	prepare_table(t_table *table, int ac, char **av)
 		|| !is_atoi_positive_and_int(av[4], &table->to_sleep) || ((ac == 6)
 			&& !is_atoi_positive_and_int(av[5], &table->max_meals)))
 		return (0);
-	table->forks = NULL;
-	table->check_death = NULL;
-	table->start_execution = NULL;
 	table->philo_pids = NULL;
 	sem_unlink(SEMAFORK);
 	sem_unlink(SEMADEATH);
@@ -58,10 +53,7 @@ int	prepare_table(t_table *table, int ac, char **av)
 	table->start_execution = sem_open(SEMAEXEC, O_CREAT, 0644, 1);
 	if (table->forks == SEM_FAILED || table->check_death == SEM_FAILED
 		|| table->start_execution == SEM_FAILED)
-	{
-		perror("sem_open");
 		return (0);
-	}
 	table->philo_pids = malloc(sizeof(*table->philo_pids) * (table->num_seats));
 	if (!table->philo_pids)
 		return (0);
@@ -72,7 +64,6 @@ int	prepare_table(t_table *table, int ac, char **av)
 	table->philo.died = 0;
 	table->philo.last_meal_start = 0;
 	table->philo.meals_i_had = 0;
-	table->philo.must_exit = 0;
 	return (1);
 }
 
