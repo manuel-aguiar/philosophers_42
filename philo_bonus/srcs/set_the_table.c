@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 10:28:55 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 10:45:12 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ int	prepare_forks_and_ids(t_table *table)
 		table->philo.my_id = i + 1;
 		table->philo_pids[i] = fork();
 		if (table->philo_pids[i] == -1)
-		{
-			table->last_good_philo = i;
 			return (0);
-		}
 		if (!table->philo_pids[i])
 			the_life_of_a_philosopher(table, &table->philo);
 		i++;
@@ -59,7 +56,6 @@ int	prepare_table(t_table *table, int ac, char **av)
 		return (0);
 	memset(table->philo_pids, '\0', sizeof(*table->philo_pids)
 		* table->num_seats);
-	table->last_good_philo = table->num_seats;
 	table->philo.self_monitor = 0;
 	table->philo.died = 0;
 	table->philo.last_meal_start = 0;
@@ -76,15 +72,8 @@ int	clean_table(t_table *table, bool wait, int exit_status)
 		if (wait)
 		{
 			i = 0;
-			while (i < table->last_good_philo)
-			{
-				if (table->philo_pids[i])
-				{
-					waitpid(table->philo_pids[i], NULL, 0);
-					table->philo_pids[i] = 0;
-				}
-				i++;
-			}
+			while (i < table->num_seats)
+				waitpid(table->philo_pids[i++], NULL, 0);
 		}
 		free(table->philo_pids);
 	}

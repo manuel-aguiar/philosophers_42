@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 10:18:34 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 11:09:03 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ void	*monitor_death_or_full(void *mytable)
 		if (!(philo->last_meal_start == 0
 				|| philo->meals_i_had == table->max_meals))
 		{
-			table->cur_time = milisec_epoch();
-			if (table->cur_time - philo->last_meal_start >= table->to_die)
+			philo->cur_time = milisec_epoch();
+			if (philo->cur_time - philo->last_meal_start >= table->to_die)
 			{
 				philo->died = 1;
-				broadcast_life_state(table, PRINT_DEATH, table->cur_time
+				broadcast_life_state(table, PRINT_DEATH, philo->cur_time
 					- table->open_time);
 				goodbye_everybody();
 				return (NULL);
@@ -101,12 +101,13 @@ void	the_life_of_a_lonely_philo(t_table *table, t_philo *philo)
 
 static int	the_beginning_of_life(t_table *table, t_philo *philo)
 {
-	//sem_wait(table->start_execution);
-	//sem_post(table->start_execution);
+	sem_wait(table->check_death);
 	if (pthread_create(&philo->self_monitor, NULL, monitor_death_or_full,
 			table))
-		clean_table(table, false, EXIT_FAILURE);
-	sem_wait(table->check_death);
+	{
+		write_stderr("philo_bonus: pthread: failed\n");
+		goodbye_everybody();
+	}
 	philo->last_meal_start = milisec_epoch();
 	sem_post(table->check_death);
 	return (1);

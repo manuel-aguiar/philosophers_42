@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 10:28:16 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 10:45:30 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ typedef struct s_table
 	sem_t		*check_death;
 	sem_t		*start_execution;
 	time_t		open_time;
-	time_t		cur_time;
-	int			last_good_philo;
 	int			to_die;
 	int			to_eat;
 	int			to_sleep;
@@ -76,12 +74,9 @@ enum			e_state
 	S_DEAD,
 };
 
-
-
 /* philosophers.c */
 int				a_philosopher_has_died(t_table *table);
 int				all_philos_are_full(t_table *table);
-int				philocide(t_table *table);
 int				open_hell_s_kitchen(t_table *table);
 
 /* set_the_table.c */
@@ -108,6 +103,7 @@ int				time_to_think(t_table *table, t_philo *philo);
 time_t			milisec_epoch(void);
 int				broadcast_life_state(t_table *table, char *state,
 					time_t time_elapsed);
+int				write_stderr(char *text);
 
 /* mini_libft.c */
 int				is_atoi_positive_and_int(char *str, int *place_res);

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:27 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/11 16:27:28 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 10:39:13 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,20 @@ int	broadcast_life_state(t_table *table, char *state, time_t time_elapsed)
 	}
 	printf("%-10ld %-5d %s\n", time_elapsed, table->philo.my_id, state);
 	return (1);
+}
+
+static size_t	ft_strlen(const char *s)
+{
+	size_t i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
+
+int	write_stderr(char *text)
+{
+	write(STDERR_FILENO, text, ft_strlen(text));
+	return (0);
 }
