@@ -4,7 +4,7 @@
 
 NAME 		=		philo_bonus
 
-CC 			= 		cc -g 
+CC 			= 		cc -g
 
 ## -Wall Wextra Werror
 FLAGS 		= 		-Wall -Werror -Wextra

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/11 16:28:06 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 10:16:19 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,18 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+# define TACTICAL_WAIT 100
+
+# define PRINT_FORK "has taken a fork"
+# define PRINT_EATING "is eating"
+# define PRINT_SLEEPING "is sleeping"
+# define PRINT_THINKING "is thinking"
+# define PRINT_DEATH "died"
+
+# define SEMAFORK "semafork"
+# define SEMADEATH "semadeath"
+# define SEMAEXEC "semaexec"
+
 typedef struct s_philo
 {
 	pthread_t	self_monitor;
@@ -42,14 +54,10 @@ typedef struct s_philo
 typedef struct s_table
 {
 	t_philo		philo;
-	pthread_t	death_monitor;
-	pthread_t	full_monitor;
 	pid_t		*philo_pids;
 	sem_t		*forks;
 	sem_t		*check_death;
 	sem_t		*start_execution;
-	sem_t		*exit_signal;
-	sem_t		*all_meals;
 	bool		init_failed;
 	int			last_good_philo;
 	time_t		open_time;
@@ -59,11 +67,6 @@ typedef struct s_table
 	int			to_sleep;
 	int			max_meals;
 	int			num_seats;
-	char		*semafork_name;
-	char		*semadeath_name;
-	char		*semaexec_name;
-	char		*semaexit_name;
-	char		*semafull_name;
 }				t_table;
 
 enum			e_state
@@ -75,13 +78,7 @@ enum			e_state
 	S_DEAD,
 };
 
-# define TACTICAL_WAIT 100
 
-# define PRINT_FORK "has taken a fork"
-# define PRINT_EATING "is eating"
-# define PRINT_SLEEPING "is sleeping"
-# define PRINT_THINKING "is thinking"
-# define PRINT_DEATH "died"
 
 /* philosophers.c */
 int				a_philosopher_has_died(t_table *table);
@@ -95,6 +92,7 @@ int				clean_table(t_table *table, bool wait, int exit_status);
 int				prepare_forks_and_ids(t_table *table);
 
 /* the_life.c */
+void			goodbye_everybody(void);
 void			the_life_of_a_philosopher(t_table *table, t_philo *philo);
 void			the_life_of_a_lonely_philo(t_table *table, t_philo *philo);
 

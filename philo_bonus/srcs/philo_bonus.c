@@ -6,43 +6,23 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:32:06 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/11 16:32:22 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 10:19:52 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	philocide(t_table *table)
-{
-	int	i;
-
-	i = 0;
-	while (i < table->last_good_philo)
-	{
-		if (table->philo_pids[i])
-		{
-			kill(table->philo_pids[i], SIGKILL);
-			table->philo_pids[i] = 0;
-		}
-		i++;
-	}
-	return (1);
-}
-
 int	open_hell_s_kitchen(t_table *table)
 {
 	if (table->max_meals == 0)
 		return (1);
-	sem_wait(table->start_execution);
 	table->open_time = milisec_epoch();
 	if (!prepare_forks_and_ids(table))
 	{
 		printf("philo: fork: last good philo %d\n", table->last_good_philo);
-		philocide(table);
-		sem_post(table->start_execution);
+		goodbye_everybody();
 		return (0);
 	}
-	sem_post(table->start_execution);
 	return (1);
 }
 
