@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 10:16:19 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/12 10:23:42 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,5 @@ int				broadcast_life_state(t_table *table, char *state,
 /* mini_libft.c */
 int				is_atoi_positive_and_int(char *str, int *place_res);
 void			*ft_free_set_null(void *ptr);
-
-/* ft_strdup.c */
-char			*ft_strdup(char *s);
-char			*ft_strjoin(char *s1, char *s2);
 
 #endif
