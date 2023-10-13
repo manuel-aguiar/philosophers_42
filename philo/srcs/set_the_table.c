@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/13 10:19:00 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/13 10:22:44 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,9 @@ int	prepare_threads_and_ids(t_table *table)
 		if (pthread_create(&table->threads[i], NULL, the_life_of_a_philosopher,
 				&table->philos[i]))
 		{
-			write_stderr("philo: pthread_create: failed\n");
 			table->last_good_thread = i;
 			table->init_failed = true;
-			return (0);
+			return (write_stderr("philo: pthread_create: failed\n"));
 		}
 		i++;
 	}
