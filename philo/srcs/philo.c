@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:24:04 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/13 10:04:09 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/13 10:17:47 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,11 @@ int	main(int ac, char **av)
 
 	if (ac < 5 || ac > 6)
 	{
-		write_stderr("philo: invalid number of inputs arguments\n");
+		write_stderr("philo: invalid number of arguments\n");
 		return (0);
 	}
-	if (!prepare_table(&table, ac, av))
-		return (0);
-	open_hell_s_kitchen(&table);
+	if (prepare_table(&table, ac, av))
+		open_hell_s_kitchen(&table);
 	clean_table(&table);
 	return (0);
 }
