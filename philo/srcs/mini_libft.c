@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:24:00 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/11 16:24:00 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/13 10:03:35 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	is_atoi_positive_and_int(char *str, int *place_res)
 	res = 0;
 	while (*str && ft_isdigit(*str) && atoi_overf(res, *str, &sign))
 		res = res * 10 - '0' + *str++;
-	if (!sign)
+	if (!sign || (*str && !ft_isdigit(*str)))
 		return (0);
 	if (place_res)
 		*place_res = res;

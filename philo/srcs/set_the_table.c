@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 10:47:12 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/13 10:02:30 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	prepare_threads_and_ids(t_table *table)
 		if (pthread_create(&table->threads[i], NULL, the_life_of_a_philosopher,
 				&table->philos[i]))
 		{
+			write_stderr("philo: pthread_create: failed\n");
 			table->last_good_thread = i;
 			table->init_failed = true;
 			return (0);
@@ -59,14 +60,17 @@ int	table_place_forks_and_detectors(t_table *table)
 	if (pthread_mutex_init(&table->start_execution, NULL)
 		|| pthread_mutex_init(&table->check_death, NULL))
 	{
-		write_stderr("mutex failed\n");
+		write_stderr("philo: pthread_mutex_init: failed\n");
 		return (clean_table(table));
 	}
 	i = 0;
 	while (i < table->num_seats)
 	{
 		if (pthread_mutex_init(&table->forks[i], NULL))
+		{
+			write_stderr("philo: pthread_mutex_init: failed\n");
 			return (clean_table(table));
+		}
 		i++;
 	}
 	return (1);
@@ -81,7 +85,7 @@ int	prepare_table(t_table *table, int ac, char **av)
 		|| !is_atoi_positive_and_int(av[3], &table->to_eat)
 		|| !is_atoi_positive_and_int(av[4], &table->to_sleep) || ((ac == 6)
 			&& !is_atoi_positive_and_int(av[5], &table->max_meals)))
-		return (0);
+		return (write_stderr("philo: argument is not an unsigned int\n"));
 	table->threads = malloc(sizeof(*table->threads) * (table->num_seats));
 	if (table->threads)
 		memset(table->threads, '\0', sizeof(*table->threads)
@@ -89,7 +93,10 @@ int	prepare_table(t_table *table, int ac, char **av)
 	table->forks = malloc(sizeof(*table->forks) * (table->num_seats));
 	table->philos = malloc(sizeof(*table->philos) * (table->num_seats));
 	if (!table->threads || !table->forks || !table->philos)
+	{
+		write_stderr("philo: malloc: failed\n");
 		return (clean_table(table));
+	}
 	table->finished_eating = 0;
 	table->exit_table = 0;
 	table->last_good_thread = table->num_seats;
