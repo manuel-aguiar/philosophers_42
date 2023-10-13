@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:32:06 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 12:20:04 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/13 10:15:36 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,11 @@ int	main(int ac, char **av)
 
 	if (ac < 5 || ac > 6)
 	{
-		write_stderr("philo: invalid arguments\n");
+		write_stderr("philo_bonus: invalid number of arguments\n");
 		return (0);
 	}
-	if (!prepare_table(&table, ac, av))
-	{
-		write_stderr("philo: syscall failed\n");
-		clean_table(&table, true, EXIT_FAILURE);
-		return (0);
-	}
-	open_hell_s_kitchen(&table);
+	if (prepare_table(&table, ac, av))
+		open_hell_s_kitchen(&table);
 	clean_table(&table, true, EXIT_SUCCESS);
 	return (0);
 }

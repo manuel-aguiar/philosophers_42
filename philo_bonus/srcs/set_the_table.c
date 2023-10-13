@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 12:08:42 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/13 10:15:31 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	prepare_forks_and_ids(t_table *table)
 		table->philo.my_id = i + 1;
 		table->philo_pids[i] = fork();
 		if (table->philo_pids[i] == -1)
-			return (0);
+			return (write_stderr("philo_bonus: fork: failed\n"));
 		if (!table->philo_pids[i])
 			the_life_of_a_philosopher(table, &table->philo);
 		i++;
@@ -38,26 +38,26 @@ int	prepare_forks_and_ids(t_table *table)
 int	prepare_table(t_table *table, int ac, char **av)
 {
 	table->max_meals = -1;
+	table->philo_pids = NULL;
 	if (!is_atoi_positive_and_int(av[1], &table->num_seats)
 		|| !is_atoi_positive_and_int(av[2], &table->to_die)
 		|| !is_atoi_positive_and_int(av[3], &table->to_eat)
 		|| !is_atoi_positive_and_int(av[4], &table->to_sleep) || ((ac == 6)
 			&& !is_atoi_positive_and_int(av[5], &table->max_meals)))
-		return (0);
-	table->philo_pids = NULL;
+		return (write_stderr("philo_bonus: argument is not an unsigned int\n"));
 	sem_unlink(SEMAFORK);
 	sem_unlink(SEMADEATH);
 	sem_unlink(SEMAEXEC);
+	table->philo_pids = malloc(sizeof(*table->philo_pids) * (table->num_seats));
+	if (!table->philo_pids)
+		return (write_stderr("philo_bonus: malloc: failed\n"));
 	table->forks = sem_open(SEMAFORK, O_CREAT, 0644,
 			table->num_seats);
 	table->check_death = sem_open(SEMADEATH, O_CREAT, 0644, 1);
 	table->start_execution = sem_open(SEMAEXEC, O_CREAT, 0644, 1);
 	if (table->forks == SEM_FAILED || table->check_death == SEM_FAILED
 		|| table->start_execution == SEM_FAILED)
-		return (0);
-	table->philo_pids = malloc(sizeof(*table->philo_pids) * (table->num_seats));
-	if (!table->philo_pids)
-		return (0);
+		return (write_stderr("philo_bonus: sem_open: failed\n"));
 	memset(table->philo_pids, '\0', sizeof(*table->philo_pids)
 		* table->num_seats);
 	return (1);
