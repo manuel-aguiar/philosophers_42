@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/13 10:22:44 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/13 13:21:39 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	prepare_threads_and_ids(t_table *table)
 		table->philos[i].table = table;
 		table->philos[i].my_id = i + 1;
 		table->philos[i].first_fork = &table->forks[i];
-		table->philos[i].second_fork = &table->forks[i - 1 + table->num_seats
-			* (i == 0)];
+		table->philos[i].second_fork = &table->forks[(i + 1) * \
+			(i + 1 != table->num_seats)];
 		if (i % 2)
 			fork_swap(&table->philos[i].first_fork,
 				&table->philos[i].second_fork);
