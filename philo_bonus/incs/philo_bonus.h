@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 12:22:15 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/13 14:55:21 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-# define TACTICAL_WAIT 100
+# define TACTICAL_WAIT 1000
 
 # define PRINT_FORK "has taken a fork"
 # define PRINT_EATING "is eating"

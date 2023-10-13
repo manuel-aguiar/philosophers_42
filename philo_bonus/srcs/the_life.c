@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/13 10:15:46 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/13 14:54:25 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	the_life_of_a_philosopher(t_table *table, t_philo *philo)
 			|| !time_to_eat(table, philo) || !time_to_sleep(table, philo)
 			|| !time_to_think(table, philo))
 			break ;
+		usleep(TACTICAL_WAIT);
 	}
 	pthread_join(table->philo.self_monitor, NULL);
 	clean_table(table, false, EXIT_SUCCESS);

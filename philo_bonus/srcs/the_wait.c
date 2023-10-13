@@ -6,11 +6,22 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/12 12:21:46 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/13 14:59:07 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+int	philo_sleep(time_t end_sleep)
+{
+	while (1)
+	{
+		if (milisec_epoch() >= end_sleep)
+			break ;
+		usleep(TACTICAL_WAIT);
+	}
+	return (1);
+}
 
 int	time_to_eat(t_table *table, t_philo *philo)
 {
@@ -22,7 +33,7 @@ int	time_to_eat(t_table *table, t_philo *philo)
 		broadcast_life_state(table, PRINT_EATING, 0);
 		philo->last_meal_start = philo->cur_time;
 		sem_post(table->check_death);
-		usleep(table->to_eat * 1000);
+		philo_sleep(milisec_epoch() + table->to_eat);
 	}
 	else
 		sem_post(table->check_death);
@@ -42,7 +53,7 @@ int	time_to_sleep(t_table *table, t_philo *philo)
 	{
 		broadcast_life_state(table, PRINT_SLEEPING, 0);
 		sem_post(table->check_death);
-		usleep(table->to_sleep * 1000);
+		philo_sleep(milisec_epoch() + table->to_sleep);
 	}
 	else
 	{
