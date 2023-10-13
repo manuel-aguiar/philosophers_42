@@ -4,7 +4,7 @@
 
 NAME 		=		philo_bonus
 
-CC 			= 		cc -g -fsanitize=address
+CC 			= 		cc -g
 
 ## -Wall Wextra Werror
 FLAGS 		= 		-Wall -Werror -Wextra
