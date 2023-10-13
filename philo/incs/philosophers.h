@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:23:49 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/13 13:24:57 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/13 14:19:06 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ enum					e_state
 	S_DEAD,
 };
 
-# define TACTICAL_WAIT 1000
+# define TACTICAL_WAIT 100
 
 # define PRINT_FORK "has taken a fork"
 # define PRINT_EATING "is eating"
