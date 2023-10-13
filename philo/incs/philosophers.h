@@ -65,7 +65,7 @@ enum					e_state
 	S_DEAD,
 };
 
-# define TACTICAL_WAIT 100
+# define TACTICAL_WAIT 1000
 
 # define PRINT_FORK "has taken a fork"
 # define PRINT_EATING "is eating"

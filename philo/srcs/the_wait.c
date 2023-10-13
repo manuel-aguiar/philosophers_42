@@ -39,6 +39,7 @@ int	time_to_eat(t_table *table, t_philo *philo)
 	if (!table->exit_table)
 	{
 		broadcast_life_state(table, philo, PRINT_EATING, 0);
+		philo->last_meal_start = philo->cur_time;
 		pthread_mutex_unlock(&table->check_death);
 		if (!philo_sleep(table, milisec_epoch() + table->to_eat))
 		{
@@ -63,18 +64,15 @@ int	time_to_sleep(t_table *table, t_philo *philo)
 {
 	pthread_mutex_lock(&table->check_death);
 	if (!table->exit_table)
-	{
 		broadcast_life_state(table, philo, PRINT_SLEEPING, 0);
-		pthread_mutex_unlock(&table->check_death);
-		if (!philo_sleep(table, milisec_epoch() + table->to_sleep))
-			return (0);
-		return (1);
-	}
 	else
 	{
 		pthread_mutex_unlock(&table->check_death);
 		return (0);
 	}
+	pthread_mutex_unlock(&table->check_death);
+	if (!philo_sleep(table, milisec_epoch() + table->to_sleep))
+		return (0);
 	return (1);
 }
 
@@ -82,15 +80,12 @@ int	time_to_think(t_table *table, t_philo *philo)
 {
 	pthread_mutex_lock(&table->check_death);
 	if (!table->exit_table)
-	{
 		broadcast_life_state(table, philo, PRINT_THINKING, 0);
-		pthread_mutex_unlock(&table->check_death);
-		return (1);
-	}
 	else
 	{
 		pthread_mutex_unlock(&table->check_death);
 		return (0);
 	}
+	pthread_mutex_unlock(&table->check_death);
 	return (1);
 }
