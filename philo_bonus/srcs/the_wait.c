@@ -20,6 +20,7 @@ int	time_to_eat(t_table *table, t_philo *philo)
 	if (!philo->died)
 	{
 		broadcast_life_state(table, PRINT_EATING, 0);
+		philo->last_meal_start = philo->cur_time;
 		sem_post(table->check_death);
 		usleep(table->to_eat * 1000);
 	}

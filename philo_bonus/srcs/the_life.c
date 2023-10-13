@@ -33,17 +33,7 @@ void	the_life_of_a_philosopher(t_table *table, t_philo *philo)
 
 void	the_life_of_a_lonely_philo(t_table *table, t_philo *philo)
 {
-	sem_wait(table->check_death);
-	if (!philo->died)
-	{
-		sem_post(table->check_death);
-		sem_wait(table->forks);
-	}
-	else
-	{
-		sem_post(table->check_death);
-		return ;
-	}
+	sem_wait(table->forks);
 	sem_wait(table->check_death);
 	if (!philo->died)
 	{
