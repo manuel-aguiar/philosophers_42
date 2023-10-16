@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 17:09:15 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 17:16:32 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	the_beginning_of_life(t_table *table, t_philo *philo)
 	sem_wait(table->start_execution);
 	sem_wait(table->check_full);
 	sem_wait(table->someone_died);
-	printf("philo %d is ready\n", philo->my_id);
+	//printf("philo %d is ready\n", philo->my_id);
 	sem_post(table->start_execution);
 	philo->my_death_check = sem_open(SEMADEATH, O_CREAT, 0644, 1);
 	if (philo->my_death_check == SEM_FAILED)
