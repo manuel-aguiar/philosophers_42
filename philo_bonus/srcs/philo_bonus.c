@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:32:06 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 17:41:48 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 17:44:50 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,7 @@ int	open_hell_s_kitchen(t_table *table)
 	}
 	i = -1;
 	while (++i < table->num_seats)
-	{
 		usleep(TACTICAL_WAIT);
-		sem_wait(table->start_execution);
-	}
 	if (pthread_create(&table->full_monitor, NULL, full_monitor, table) \
 	|| pthread_create(&table->death_monitor, NULL, death_monitor, table))
 	{

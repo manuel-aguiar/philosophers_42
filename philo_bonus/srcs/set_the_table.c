@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 17:32:52 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 17:44:41 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,12 @@ int	table_prepare_semaphores(t_table *table)
 	table->forks = sem_open(SEMAFORK, O_CREAT, 0644,
 			table->num_seats);
 	table->check_death = sem_open(SEMADEATH, O_CREAT, 0644, 1);
-	table->start_execution = sem_open(SEMAEXEC, O_CREAT, 0644,
-			table->num_seats);
 	table->check_full = sem_open(SEMAFULL, O_CREAT, 0644,
 			table->num_seats);
 	table->someone_died = sem_open(SEMADIED, O_CREAT, 0644,
 			table->num_seats);
 	if (table->forks == SEM_FAILED
 		|| table->check_death == SEM_FAILED
-		|| table->start_execution == SEM_FAILED
 		|| table->check_full == SEM_FAILED
 		|| table->someone_died == SEM_FAILED)
 		return (write_stderr("philo_bonus: sem_open: failed\n"));
@@ -95,12 +92,10 @@ int	clean_table(t_table *table, bool is_main, int exit_status)
 		free(table->philo_pids);
 	sem_close(table->forks);
 	sem_close(table->check_death);
-	sem_close(table->start_execution);
 	sem_close(table->check_full);
 	sem_close(table->someone_died);
 	sem_unlink(SEMAFORK);
 	sem_unlink(SEMADEATH);
-	sem_unlink(SEMAEXEC);
 	sem_unlink(SEMAFULL);
 	sem_unlink(SEMADIED);
 	exit(exit_status);
