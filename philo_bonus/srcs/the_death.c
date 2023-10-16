@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:18:47 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 17:30:21 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 17:39:13 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,16 @@ void	*monitor_death_or_full(void *mytable)
 	philo = &table->philo;
 	if (table->to_die == 0)
 	{
-		sem_wait(table->check_death);
+		sem_wait(philo->my_death_check);
 		philo->died = 1;
 		return (the_end_of_life(table, 0));
 	}
 	while (1)
 	{
-		sem_wait(table->check_death);
+		sem_wait(philo->my_death_check);
 		if (i_am_dead(table, philo))
 			return (the_end_of_life(table, philo->cur_time));
-		sem_post(table->check_death);
+		sem_post(philo->my_death_check);
 		usleep(TACTICAL_WAIT);
 	}
 	return (NULL);

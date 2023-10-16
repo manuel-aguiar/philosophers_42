@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 17:33:17 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 17:42:04 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,15 @@ void	the_life_of_a_philosopher(t_table *table, t_philo *philo)
 void	the_life_of_a_lonely_philo(t_table *table, t_philo *philo)
 {
 	sem_wait(table->forks);
-	sem_wait(table->check_death);
+	sem_wait(philo->my_death_check);
 	if (!philo->died)
 	{
 		broadcast_life_state(table, PRINT_FORK, 0);
-		sem_post(table->check_death);
+		sem_post(philo->my_death_check);
 		usleep(table->to_die * 1000 * 2 + 1000000);
 	}
 	else
-		sem_post(table->check_death);
+		sem_post(philo->my_death_check);
 	sem_post(table->forks);
 }
 
