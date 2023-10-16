@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_the_table.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 17:44:41 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 21:27:42 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	table_prepare_semaphores(t_table *table)
 			table->num_seats);
 	table->someone_died = sem_open(SEMADIED, O_CREAT, 0644,
 			table->num_seats);
+	table->death_monitor = 0;
+	table->full_monitor = 0;
 	if (table->forks == SEM_FAILED
 		|| table->check_death == SEM_FAILED
 		|| table->check_full == SEM_FAILED
