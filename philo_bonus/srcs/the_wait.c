@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 15:31:40 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 16:08:17 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	time_to_eat(t_table *table, t_philo *philo)
 	}
 	else
 		sem_post(table->check_death);
+	sem_wait(table->check_death);
 	ret = !philo->died;
 	if ((++philo->meals_i_had * ret == table->max_meals))
 		sem_post(table->check_full);

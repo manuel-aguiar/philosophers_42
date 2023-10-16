@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:32:06 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 16:00:11 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 16:11:59 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	*death_monitor(void *mytable)
 
 	table = (t_table *)mytable;
 	sem_wait(table->someone_died);
-	printf("someone died\n");
+	//printf("someone died\n");
 	//sem_wait(table->check_death);
 	//printf("main monitor locked death???\n");
 	philocide(table);
