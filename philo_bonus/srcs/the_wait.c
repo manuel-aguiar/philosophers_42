@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/13 14:59:07 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 15:31:40 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	philo_sleep(time_t end_sleep)
 int	time_to_eat(t_table *table, t_philo *philo)
 {
 	int	ret;
-
+	
 	sem_wait(table->check_death);
 	if (!philo->died)
 	{
@@ -37,13 +37,13 @@ int	time_to_eat(t_table *table, t_philo *philo)
 	}
 	else
 		sem_post(table->check_death);
-	sem_wait(table->check_death);
-	philo->meals_i_had += 1 * (!philo->died);
-	ret = (philo->meals_i_had == table->max_meals) + philo->died;
+	ret = !philo->died;
+	if ((++philo->meals_i_had * ret == table->max_meals))
+		sem_post(table->check_full);
 	sem_post(table->forks);
 	sem_post(table->forks);
 	sem_post(table->check_death);
-	return (!ret);
+	return (ret);
 }
 
 int	time_to_sleep(t_table *table, t_philo *philo)

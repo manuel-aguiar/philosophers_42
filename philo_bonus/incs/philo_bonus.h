@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/13 14:55:21 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 15:44:01 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@
 # define SEMAFORK "semafork"
 # define SEMADEATH "semadeath"
 # define SEMAEXEC "semaexec"
+# define SEMAFULL "semafull"
+# define SEMADIED "semadied"
 
 typedef struct s_philo
 {
@@ -46,6 +48,7 @@ typedef struct s_philo
 	int			died;
 	int			my_id;
 	int			meals_i_had;
+	sem_t		*my_death_check;
 	time_t		last_meal_start;
 	time_t		cur_time;
 }				t_philo;
@@ -53,10 +56,14 @@ typedef struct s_philo
 typedef struct s_table
 {
 	t_philo		philo;
+	pthread_t	full_monitor;
+	pthread_t	death_monitor;
 	pid_t		*philo_pids;
 	sem_t		*forks;
 	sem_t		*check_death;
 	sem_t		*start_execution;
+	sem_t		*check_full;
+	sem_t		*someone_died;
 	time_t		open_time;
 	int			to_die;
 	int			to_eat;

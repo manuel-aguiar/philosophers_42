@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/13 10:15:31 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 15:45:08 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	prepare_table(t_table *table, int ac, char **av)
 	sem_unlink(SEMAFORK);
 	sem_unlink(SEMADEATH);
 	sem_unlink(SEMAEXEC);
+	sem_unlink(SEMAFULL);
+	sem_unlink(SEMADIED);
 	table->philo_pids = malloc(sizeof(*table->philo_pids) * (table->num_seats));
 	if (!table->philo_pids)
 		return (write_stderr("philo_bonus: malloc: failed\n"));
@@ -55,34 +57,35 @@ int	prepare_table(t_table *table, int ac, char **av)
 			table->num_seats);
 	table->check_death = sem_open(SEMADEATH, O_CREAT, 0644, 1);
 	table->start_execution = sem_open(SEMAEXEC, O_CREAT, 0644, 1);
+	table->check_full = sem_open(SEMAFULL, O_CREAT, 0644, table->num_seats);
+	table->someone_died = sem_open(SEMADIED, O_CREAT, 0644, table->num_seats);
 	if (table->forks == SEM_FAILED || table->check_death == SEM_FAILED
-		|| table->start_execution == SEM_FAILED)
+		|| table->start_execution == SEM_FAILED)			// ADD SEM_FAILED
 		return (write_stderr("philo_bonus: sem_open: failed\n"));
 	memset(table->philo_pids, '\0', sizeof(*table->philo_pids)
 		* table->num_seats);
 	return (1);
 }
 
-int	clean_table(t_table *table, bool wait, int exit_status)
+int	clean_table(t_table *table, bool is_main, int exit_status)
 {
-	int	i;
-
-	if (table->philo_pids)
+	if (is_main)
 	{
-		if (wait)
-		{
-			i = 0;
-			while (i < table->num_seats)
-				waitpid(table->philo_pids[i++], NULL, 0);
-		}
-		free(table->philo_pids);
+		pthread_join(table->death_monitor, NULL);
+		pthread_join(table->full_monitor, NULL);
 	}
+	else
+		sem_close(table->philo.my_death_check);
+	if (table->philo_pids)
+		free(table->philo_pids);
 	sem_close(table->forks);
 	sem_close(table->check_death);
 	sem_close(table->start_execution);
 	sem_unlink(SEMAFORK);
 	sem_unlink(SEMADEATH);
 	sem_unlink(SEMAEXEC);
+	sem_unlink(SEMAFULL);
+	sem_unlink(SEMADIED);
 	exit(exit_status);
 	return (1);
 }
