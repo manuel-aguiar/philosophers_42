@@ -22,8 +22,8 @@ SRC_FILES	=		philo_bonus.c		\
 					the_routine.c		\
 					the_wait.c			\
 					time_and_print.c	\
-					mini_libft_2.c		\
-					mini_libft.c		
+					mini_libft.c		\
+					mini_libft2.c		
 
 SRCS		:=		$(addprefix $(SRC_PATH)/,$(SRC_FILES)) \
 
