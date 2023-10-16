@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:46 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 12:12:35 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 12:25:27 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,22 @@ int	philo_sleep(t_table *table, time_t end_sleep)
 	return (1);
 }
 
-int	time_to_eat(t_table *table, t_philo *philo)
+int	update_meals(t_table *table, t_philo *philo)
 {
 	int	ret;
 
+	pthread_mutex_lock(&table->check_death);
+	ret = !table->exit_table;
+	table->finished_eating += (++philo->meals_i_had == table->max_meals) \
+		* ret;
+	pthread_mutex_unlock(philo->second_fork);
+	pthread_mutex_unlock(philo->first_fork);
+	pthread_mutex_unlock(&table->check_death);
+	return (ret);
+}
+
+int	time_to_eat(t_table *table, t_philo *philo)
+{
 	pthread_mutex_lock(&table->check_death);
 	if (!table->exit_table)
 	{
@@ -50,14 +62,7 @@ int	time_to_eat(t_table *table, t_philo *philo)
 	}
 	else
 		pthread_mutex_unlock(&table->check_death);
-	pthread_mutex_lock(&table->check_death);
-	table->finished_eating += (++philo->meals_i_had == table->max_meals)
-		* (!table->exit_table);
-	ret = (philo->meals_i_had == table->max_meals) + table->exit_table;
-	pthread_mutex_unlock(philo->second_fork);
-	pthread_mutex_unlock(philo->first_fork);
-	pthread_mutex_unlock(&table->check_death);
-	return (!ret);
+	return (update_meals(table, philo));
 }
 
 int	time_to_sleep(t_table *table, t_philo *philo)
