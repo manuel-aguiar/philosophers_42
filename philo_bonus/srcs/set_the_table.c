@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 15:45:08 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 16:50:37 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ int	prepare_table(t_table *table, int ac, char **av)
 	table->forks = sem_open(SEMAFORK, O_CREAT, 0644,
 			table->num_seats);
 	table->check_death = sem_open(SEMADEATH, O_CREAT, 0644, 1);
-	table->start_execution = sem_open(SEMAEXEC, O_CREAT, 0644, 1);
+	table->start_execution = sem_open(SEMAEXEC, O_CREAT, 0644, 0);
 	table->check_full = sem_open(SEMAFULL, O_CREAT, 0644, table->num_seats);
 	table->someone_died = sem_open(SEMADIED, O_CREAT, 0644, table->num_seats);
 	if (table->forks == SEM_FAILED || table->check_death == SEM_FAILED
-		|| table->start_execution == SEM_FAILED)			// ADD SEM_FAILED
+		|| table->start_execution == SEM_FAILED || table->check_full == SEM_FAILED || table->someone_died == SEM_FAILED)			// ADD SEM_FAILED
 		return (write_stderr("philo_bonus: sem_open: failed\n"));
 	memset(table->philo_pids, '\0', sizeof(*table->philo_pids)
 		* table->num_seats);
@@ -71,8 +71,10 @@ int	clean_table(t_table *table, bool is_main, int exit_status)
 {
 	if (is_main)
 	{
-		pthread_join(table->death_monitor, NULL);
-		pthread_join(table->full_monitor, NULL);
+		if (table->death_monitor)
+			pthread_join(table->death_monitor, NULL);
+		if (table->full_monitor)
+			pthread_join(table->full_monitor, NULL);
 	}
 	else
 		sem_close(table->philo.my_death_check);
@@ -81,6 +83,8 @@ int	clean_table(t_table *table, bool is_main, int exit_status)
 	sem_close(table->forks);
 	sem_close(table->check_death);
 	sem_close(table->start_execution);
+	sem_close(table->check_full);
+	sem_close(table->someone_died);
 	sem_unlink(SEMAFORK);
 	sem_unlink(SEMADEATH);
 	sem_unlink(SEMAEXEC);

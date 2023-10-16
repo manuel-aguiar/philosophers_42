@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 16:11:53 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 16:52:54 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,20 @@ void	the_life_of_a_lonely_philo(t_table *table, t_philo *philo)
 static int	the_beginning_of_life(t_table *table, t_philo *philo)
 {
 	sem_wait(table->check_full);
-	printf("philo %d taken full\n", philo->my_id);
 	sem_wait(table->someone_died);
-	printf("philo %d taken death\n", philo->my_id);
+	sem_post(table->start_execution);
 	philo->my_death_check = sem_open(SEMADEATH, O_CREAT, 0644, 1);
-	//table->check_death = sem_open(SEMADEATH, O_CREAT, 0644, 1);
-	// SEM_FAILED CHECK
+	if (philo->my_death_check == SEM_FAILED)
+	{
+		write_stderr("philo_bonus: sem_open: failed\n");
+		sem_post(table->someone_died);
+	}
 	sem_wait(philo->my_death_check);
-	//printf("received my own death\n");
 	if (pthread_create(&philo->self_monitor, NULL, monitor_death_or_full,
 			table))
 	{
 		write_stderr("philo_bonus: pthread: failed\n");
-		goodbye_everybody();			//replace with clean exit;
+		sem_post(table->someone_died);
 	}
 	philo->last_meal_start = milisec_epoch();
 	sem_post(philo->my_death_check);
