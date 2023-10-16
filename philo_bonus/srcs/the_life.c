@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_life.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 17:42:04 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 21:57:33 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,15 @@ void	the_life_of_a_philosopher(t_table *table, t_philo *philo)
 void	the_life_of_a_lonely_philo(t_table *table, t_philo *philo)
 {
 	sem_wait(table->forks);
-	sem_wait(philo->my_death_check);
+	sem_wait(philo->my_meal);
 	if (!philo->died)
 	{
 		broadcast_life_state(table, PRINT_FORK, 0);
-		sem_post(philo->my_death_check);
+		sem_post(philo->my_meal);
 		usleep(table->to_die * 1000 * 2 + 1000000);
 	}
 	else
-		sem_post(philo->my_death_check);
+		sem_post(philo->my_meal);
 	sem_post(table->forks);
 }
 
@@ -57,8 +57,18 @@ static int	the_beginning_of_life(t_table *table, t_philo *philo)
 		write_stderr("philo_bonus: sem_open: failed\n");
 		sem_post(table->someone_died);
 	}
+	ft_strcpy(philo->meal_name, SEMAMEAL);
+	positive_int_to_str(&philo->meal_name[6], philo->my_id);
+	sem_unlink(philo->meal_name);
+	philo->my_meal = sem_open(philo->meal_name, O_CREAT, 0644, 1);
+	if (philo->my_meal == SEM_FAILED)
+	{
+		write_stderr("philo_bonus: sem_open: failed\n");
+		sem_post(table->someone_died);
+	}
+	sem_wait(philo->my_meal);
 	sem_wait(philo->my_death_check);
-	if (pthread_create(&philo->self_monitor, NULL, monitor_death_or_full,
+	if (pthread_create(&philo->self_monitor, NULL, monitor_my_own_death,
 			table))
 	{
 		write_stderr("philo_bonus: pthread: failed\n");
@@ -66,5 +76,6 @@ static int	the_beginning_of_life(t_table *table, t_philo *philo)
 	}
 	philo->last_meal_start = milisec_epoch();
 	sem_post(philo->my_death_check);
+	sem_post(philo->my_meal);
 	return (1);
 }

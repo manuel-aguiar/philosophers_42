@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 21:27:42 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/16 21:42:35 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,12 @@ int	clean_table(t_table *table, bool is_main, int exit_status)
 			pthread_join(table->full_monitor, NULL);
 	}
 	else
+	{
 		sem_close(table->philo.my_death_check);
+		sem_close(table->philo.my_meal);
+		if (*(table->philo.meal_name))
+			sem_unlink(table->philo.meal_name);
+	}
 	if (table->philo_pids)
 		free(table->philo_pids);
 	sem_close(table->forks);

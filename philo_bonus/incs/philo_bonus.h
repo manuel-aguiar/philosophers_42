@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 17:47:28 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 21:44:59 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define SEMAEXEC "semaexec"
 # define SEMAFULL "semafull"
 # define SEMADIED "semadied"
+# define SEMAMEAL "philo_"
 
 typedef struct s_philo
 {
@@ -49,6 +50,8 @@ typedef struct s_philo
 	int			my_id;
 	int			meals_i_had;
 	sem_t		*my_death_check;
+	sem_t		*my_meal;
+	char		meal_name[17];
 	time_t		last_meal_start;
 	time_t		cur_time;
 }				t_philo;
@@ -95,7 +98,7 @@ void			the_life_of_a_philosopher(t_table *table, t_philo *philo);
 void			the_life_of_a_lonely_philo(t_table *table, t_philo *philo);
 
 /* the death.c */
-void			*monitor_death_or_full(void *mytable);
+void			*monitor_my_own_death(void *mytable);
 
 /* the_routine.c */
 int				take_first_fork(t_table *table, t_philo *philo);
@@ -115,5 +118,9 @@ int				write_stderr(char *text);
 /* mini_libft.c */
 int				is_atoi_positive_and_int(char *str, int *place_res);
 void			*ft_free_set_null(void *ptr);
+
+/* mini_libft_2.c*/
+char			*ft_strcpy(char *dst, const char *src);
+void			positive_int_to_str(char *str, int nb);
 
 #endif
