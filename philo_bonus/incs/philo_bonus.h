@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 15:44:01 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 17:47:28 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ typedef struct s_table
 	pid_t		*philo_pids;
 	sem_t		*forks;
 	sem_t		*check_death;
-	sem_t		*start_execution;
 	sem_t		*check_full;
 	sem_t		*someone_died;
 	time_t		open_time;
@@ -97,7 +96,6 @@ void			the_life_of_a_lonely_philo(t_table *table, t_philo *philo);
 
 /* the death.c */
 void			*monitor_death_or_full(void *mytable);
-void			goodbye_everybody(void);
 
 /* the_routine.c */
 int				take_first_fork(t_table *table, t_philo *philo);

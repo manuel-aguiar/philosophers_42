@@ -6,19 +6,11 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:18:47 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 17:39:13 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 17:47:23 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-void	goodbye_everybody(void)
-{
-	sem_unlink(SEMAFORK);
-	sem_unlink(SEMADEATH);
-	sem_unlink(SEMAEXEC);
-	kill(0, SIGKILL);
-}
 
 void	*the_end_of_life(t_table *table, time_t time)
 {
