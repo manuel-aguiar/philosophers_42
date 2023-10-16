@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:32:06 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/13 10:15:36 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 11:50:29 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	open_hell_s_kitchen(t_table *table)
 	table->open_time = milisec_epoch();
 	if (!prepare_forks_and_ids(table))
 	{
-		write_stderr("philo: fork: failed\n");
 		goodbye_everybody();
 		return (0);
 	}
