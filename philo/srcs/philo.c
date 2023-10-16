@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:24:04 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/13 10:17:47 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 12:12:23 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int	a_philosopher_has_died(t_table *table)
 	i = 0;
 	while (i < table->num_seats)
 	{
-		if (!(table->philos[i].last_meal_start == 0
-				|| table->philos[i].meals_i_had == table->max_meals))
+		if (table->philos[i].last_meal_start != 0)
 		{
 			if (table->cur_time
 				- table->philos[i].last_meal_start >= table->to_die)
