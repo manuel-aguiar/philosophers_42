@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 21:57:04 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/16 23:18:19 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ int	time_to_eat(t_table *table, t_philo *philo)
 		philo_sleep(milisec_epoch() + table->to_eat);
 	}
 	else
+	{
 		sem_post(philo->my_meal);
+	}
 	sem_wait(philo->my_meal);
 	ret = !philo->died;
 	if ((++philo->meals_i_had * ret == table->max_meals))

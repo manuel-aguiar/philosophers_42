@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:18:47 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 22:47:09 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/16 23:33:51 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,16 @@ void	*the_end_of_life(t_table *table, time_t time)
 	return (NULL);
 }
 
-static int	i_am_dead(t_table *table, t_philo *philo)
+int	i_am_dead(t_table *table, t_philo *philo)
 {
 	if (philo->last_meal_start != 0)
 	{
 		philo->cur_time = milisec_epoch();
+		//printf("%-10ld philo %d checking death\n", philo->cur_time - philo->last_meal_start, philo->my_id);
 		if (philo->cur_time - philo->last_meal_start >= table->to_die)
 		{
 			sem_wait(table->check_death);
+			//printf("philo %d died and locked death\n", philo->my_id);
 			philo->died = 1;
 			return (1);
 		}
@@ -52,8 +54,12 @@ void	*monitor_my_own_death(void *mytable)
 	while (1)
 	{
 		sem_wait(philo->my_meal);
+		//sem_wait(table->check_death);
+		
 		if (i_am_dead(table, philo))
-			return (the_end_of_life(table, philo->cur_time));
+			return (the_end_of_life(table, 0));
+		
+		//sem_post(table->check_death);
 		sem_post(philo->my_meal);
 		usleep(TACTICAL_WAIT);
 	}

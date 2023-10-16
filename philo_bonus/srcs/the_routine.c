@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:49 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 21:58:10 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/16 23:18:27 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	take_first_fork(t_table *table, t_philo *philo)
 	{
 		sem_post(table->forks);
 		sem_post(philo->my_meal);
-		return (0);
 	}
 	sem_post(philo->my_meal);
 	return (1);
