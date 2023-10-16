@@ -37,7 +37,7 @@ $(NAME): $(OBJS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	@mkdir -p $(dir $@)
-	@$(CC) $(FLAGS) $(INCS) -c $< -o $@ $(LIBS)
+	@$(CC) $(FLAGS) $(INCS) -c $< -o $@
 
 clean:
 	@if [ -d "$(OBJ_PATH)" ]; then \
