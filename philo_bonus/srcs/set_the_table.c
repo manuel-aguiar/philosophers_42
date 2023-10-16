@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 17:15:26 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 17:32:52 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,31 @@ int	prepare_forks_and_ids(t_table *table)
 	return (1);
 }
 
+int	table_prepare_semaphores(t_table *table)
+{
+	sem_unlink(SEMAFORK);
+	sem_unlink(SEMADEATH);
+	sem_unlink(SEMAEXEC);
+	sem_unlink(SEMAFULL);
+	sem_unlink(SEMADIED);
+	table->forks = sem_open(SEMAFORK, O_CREAT, 0644,
+			table->num_seats);
+	table->check_death = sem_open(SEMADEATH, O_CREAT, 0644, 1);
+	table->start_execution = sem_open(SEMAEXEC, O_CREAT, 0644,
+			table->num_seats);
+	table->check_full = sem_open(SEMAFULL, O_CREAT, 0644,
+			table->num_seats);
+	table->someone_died = sem_open(SEMADIED, O_CREAT, 0644,
+			table->num_seats);
+	if (table->forks == SEM_FAILED
+		|| table->check_death == SEM_FAILED
+		|| table->start_execution == SEM_FAILED
+		|| table->check_full == SEM_FAILED
+		|| table->someone_died == SEM_FAILED)
+		return (write_stderr("philo_bonus: sem_open: failed\n"));
+	return (1);
+}
+
 int	prepare_table(t_table *table, int ac, char **av)
 {
 	table->max_meals = -1;
@@ -45,25 +70,13 @@ int	prepare_table(t_table *table, int ac, char **av)
 		|| !is_atoi_positive_and_int(av[4], &table->to_sleep) || ((ac == 6)
 			&& !is_atoi_positive_and_int(av[5], &table->max_meals)))
 		return (write_stderr("philo_bonus: argument is not an unsigned int\n"));
-	sem_unlink(SEMAFORK);
-	sem_unlink(SEMADEATH);
-	sem_unlink(SEMAEXEC);
-	sem_unlink(SEMAFULL);
-	sem_unlink(SEMADIED);
 	table->philo_pids = malloc(sizeof(*table->philo_pids) * (table->num_seats));
 	if (!table->philo_pids)
 		return (write_stderr("philo_bonus: malloc: failed\n"));
-	table->forks = sem_open(SEMAFORK, O_CREAT, 0644,
-			table->num_seats);
-	table->check_death = sem_open(SEMADEATH, O_CREAT, 0644, 1);
-	table->start_execution = sem_open(SEMAEXEC, O_CREAT, 0644, table->num_seats);
-	table->check_full = sem_open(SEMAFULL, O_CREAT, 0644, table->num_seats);
-	table->someone_died = sem_open(SEMADIED, O_CREAT, 0644, table->num_seats);
-	if (table->forks == SEM_FAILED || table->check_death == SEM_FAILED
-		|| table->start_execution == SEM_FAILED || table->check_full == SEM_FAILED || table->someone_died == SEM_FAILED)
-		return (write_stderr("philo_bonus: sem_open: failed\n"));
 	memset(table->philo_pids, '\0', sizeof(*table->philo_pids)
 		* table->num_seats);
+	if (!table_prepare_semaphores(table))
+		return (0);
 	return (1);
 }
 

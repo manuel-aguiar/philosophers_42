@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 16:08:17 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 17:30:32 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	philo_sleep(time_t end_sleep)
 int	time_to_eat(t_table *table, t_philo *philo)
 {
 	int	ret;
-	
+
 	sem_wait(table->check_death);
 	if (!philo->died)
 	{
