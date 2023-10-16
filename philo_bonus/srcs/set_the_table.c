@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 16:59:29 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/16 17:15:26 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ int	prepare_table(t_table *table, int ac, char **av)
 	table->forks = sem_open(SEMAFORK, O_CREAT, 0644,
 			table->num_seats);
 	table->check_death = sem_open(SEMADEATH, O_CREAT, 0644, 1);
-	table->start_execution = sem_open(SEMAEXEC, O_CREAT, 0644, 0);
+	table->start_execution = sem_open(SEMAEXEC, O_CREAT, 0644, table->num_seats);
 	table->check_full = sem_open(SEMAFULL, O_CREAT, 0644, table->num_seats);
 	table->someone_died = sem_open(SEMADIED, O_CREAT, 0644, table->num_seats);
 	if (table->forks == SEM_FAILED || table->check_death == SEM_FAILED
-		|| table->start_execution == SEM_FAILED || table->check_full == SEM_FAILED || table->someone_died == SEM_FAILED)			// ADD SEM_FAILED
+		|| table->start_execution == SEM_FAILED || table->check_full == SEM_FAILED || table->someone_died == SEM_FAILED)
 		return (write_stderr("philo_bonus: sem_open: failed\n"));
 	memset(table->philo_pids, '\0', sizeof(*table->philo_pids)
 		* table->num_seats);
