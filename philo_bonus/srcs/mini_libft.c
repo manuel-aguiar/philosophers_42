@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:30:50 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/13 10:04:53 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/17 15:02:35 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	*ft_free_set_null(void *ptr)
 {
+	
 	unsigned char	**to_free;
 
 	to_free = (unsigned char **)ptr;
