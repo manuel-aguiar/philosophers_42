@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:26 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/17 21:25:57 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/17 22:53:16 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	*the_life_of_a_philosopher(void *my_struct)
 	table = philo->table;
 	if (!the_beginning_of_life(table))
 		return (NULL);
+	usleep(TACTICAL_WAIT * philo->my_id & 1);
 	pthread_mutex_lock(&table->check_death);
 	philo->last_meal_start = milisec_epoch();
 	pthread_mutex_unlock(&table->check_death);
@@ -34,9 +35,7 @@ void	*the_life_of_a_philosopher(void *my_struct)
 			|| !time_to_eat(table, philo) || !time_to_sleep(table, philo)
 			|| !time_to_think(table, philo))
 			break ;
-		if ((table->num_seats & 1))
-			fork_swap(&philo->first_fork, &philo->second_fork);
-		usleep(TACTICAL_WAIT);
+		usleep(TACTICAL_WAIT * (1 + (philo->my_id >> 31 & 1)));
 	}
 	return (NULL);
 }
