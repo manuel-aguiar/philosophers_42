@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_wait.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 23:18:19 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:23:21 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	time_to_eat(t_table *table, t_philo *philo)
 	int	ret;
 
 	sem_wait(philo->my_meal);
-	if (!philo->died)
+	if (!i_am_dead(table, philo))
 	{
 		broadcast_life_state(table, PRINT_EATING, 0);
 		philo->last_meal_start = philo->cur_time;
@@ -38,6 +38,7 @@ int	time_to_eat(t_table *table, t_philo *philo)
 	else
 	{
 		sem_post(philo->my_meal);
+		the_end_of_life(table);
 	}
 	sem_wait(philo->my_meal);
 	ret = !philo->died;
@@ -52,7 +53,7 @@ int	time_to_eat(t_table *table, t_philo *philo)
 int	time_to_sleep(t_table *table, t_philo *philo)
 {
 	sem_wait(philo->my_meal);
-	if (!philo->died)
+	if (!i_am_dead(table, philo))
 	{
 		broadcast_life_state(table, PRINT_SLEEPING, 0);
 		sem_post(philo->my_meal);
@@ -61,6 +62,7 @@ int	time_to_sleep(t_table *table, t_philo *philo)
 	else
 	{
 		sem_post(philo->my_meal);
+		the_end_of_life(table);
 		return (0);
 	}
 	return (1);
@@ -69,7 +71,7 @@ int	time_to_sleep(t_table *table, t_philo *philo)
 int	time_to_think(t_table *table, t_philo *philo)
 {
 	sem_wait(philo->my_meal);
-	if (!philo->died)
+	if (!i_am_dead(table, philo))
 	{
 		broadcast_life_state(table, PRINT_THINKING, 0);
 		sem_post(philo->my_meal);
@@ -78,6 +80,7 @@ int	time_to_think(t_table *table, t_philo *philo)
 	else
 	{
 		sem_post(philo->my_meal);
+		the_end_of_life(table);
 		return (0);
 	}
 	return (1);

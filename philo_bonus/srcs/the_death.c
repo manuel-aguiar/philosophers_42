@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:18:47 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/17 14:55:59 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/17 15:13:25 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	*the_end_of_life(t_table *table)
 {
+	sem_wait(table->check_death);
 	printf("%-10ld %-5d %s\n", milisec_epoch() - table->open_time, \
 		table->philo.my_id, PRINT_DEATH);
 	sem_post(table->someone_died);
@@ -27,7 +28,6 @@ int	i_am_dead(t_table *table, t_philo *philo)
 		philo->cur_time = milisec_epoch();
 		if (philo->cur_time - philo->last_meal_start >= table->to_die)
 		{
-			sem_wait(table->check_death);
 			philo->died = 1;
 			return (1);
 		}
@@ -44,7 +44,6 @@ void	*monitor_my_own_death(void *mytable)
 	philo = &table->philo;
 	if (table->to_die == 0)
 	{
-		sem_wait(table->check_death);
 		philo->died = 1;
 		return (the_end_of_life(table));
 	}
