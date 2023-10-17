@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 23:02:45 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/17 14:52:45 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,17 +90,16 @@ int				open_hell_s_kitchen(t_table *table);
 
 /* set_the_table.c */
 int				prepare_table(t_table *table, int ac, char **av);
-int				clean_table(t_table *table, bool wait, int exit_status);
+int				clean_table(t_table *table, bool is_main, int exit_status);
 int				prepare_forks_and_ids(t_table *table);
 
 /* the_life.c */
 void			the_life_of_a_philosopher(t_table *table, t_philo *philo);
-void			the_life_of_a_lonely_philo(t_table *table, t_philo *philo);
 
 /* the death.c */
 int				i_am_dead(t_table *table, t_philo *philo);
 void			*monitor_my_own_death(void *mytable);
-void			*the_end_of_life(t_table *table, time_t time);
+void			*the_end_of_life(t_table *table);
 
 /* the_routine.c */
 int				take_first_fork(t_table *table, t_philo *philo);
