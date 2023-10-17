@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_life.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:26 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/13 13:18:40 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/17 21:25:57 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	*the_life_of_a_philosopher(void *my_struct)
 			|| !time_to_eat(table, philo) || !time_to_sleep(table, philo)
 			|| !time_to_think(table, philo))
 			break ;
+		if ((table->num_seats & 1))
+			fork_swap(&philo->first_fork, &philo->second_fork);
 		usleep(TACTICAL_WAIT);
 	}
 	return (NULL);
