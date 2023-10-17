@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_life.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/17 14:43:12 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/17 21:16:21 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,3 +86,7 @@ static int	the_beginning_of_life(t_table *table, t_philo *philo)
 	sem_post(philo->my_meal);
 	return (1);
 }
+
+// to die > to_eat + to_sleep + "FRICCAO"
+
+// to die > to_eat * (2 + numero de filosofos % 2) + "FRICCAO"
