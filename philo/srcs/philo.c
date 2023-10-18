@@ -6,11 +6,20 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:24:04 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 16:26:09 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 16:40:22 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+int	table_warns_someone_died(t_table *table, int index)
+{
+	table->exit_table = 1;
+	broadcast_life_state(table, &table->philos[index], PRINT_DEATH,
+		table->cur_time - table->open_time);
+	pthread_mutex_unlock(&table->check_death);
+	return (1);
+}
 
 int	either_a_philospher_died_or_all_are_full(t_table *table)
 {
@@ -30,20 +39,13 @@ int	either_a_philospher_died_or_all_are_full(t_table *table)
 		{
 			if (table->cur_time
 				- table->philos[i].last_meal_start >= table->to_die)
-			{
-				table->exit_table = 1;
-				broadcast_life_state(table, &table->philos[i], PRINT_DEATH,
-					table->cur_time - table->open_time);
-				pthread_mutex_unlock(&table->check_death);
-				return (1);
-			}
+				return (table_warns_someone_died(table, i));
 		}
 		i++;
 	}
 	pthread_mutex_unlock(&table->check_death);
 	return (0);
 }
-
 
 int	open_hell_s_kitchen(t_table *table)
 {
