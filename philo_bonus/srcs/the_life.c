@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 11:26:31 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 15:12:00 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,21 @@ static void	the_life_of_a_lonely_philo(t_table *table, t_philo *philo);
 
 void	the_life_of_a_philosopher(t_table *table, t_philo *philo)
 {
+	int	to_think;
+	
 	if (!the_beginning_of_life(table, philo))
 		return ;
 	if (table->num_seats == 1)
 		return (the_life_of_a_lonely_philo(table, philo));
+	to_think = (table->to_die - table->to_eat - table->to_sleep) / 5;
+	if (philo->my_id % 2 == 0)
+		philo_sleep(milisec_epoch() + to_think);
 	while (1)
 	{
 		if (!take_first_fork(table, philo) || !take_second_fork(table, philo)
 			|| !time_to_eat(table, philo) || !time_to_sleep(table, philo)
 			|| !time_to_think(table, philo))
 			break ;
-		usleep(TACTICAL_WAIT);
 	}
 	pthread_join(table->philo.self_monitor, NULL);
 	clean_table(table, false, EXIT_SUCCESS);
@@ -71,7 +75,6 @@ static int	the_beginning_of_life(t_table *table, t_philo *philo)
 	sem_wait(table->someone_died);
 	if (!philo_set_semaphores(table, philo))
 		return (0);
-	usleep(philo->my_id * 100);
 	sem_wait(philo->my_meal);
 	sem_wait(philo->my_death_check);
 	philo_sleep(table->open_time);
