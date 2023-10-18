@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_wait.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 15:26:43 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 18:54:34 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ int	philo_sleep(time_t end_sleep)
 
 int	time_to_eat(t_table *table, t_philo *philo)
 {
-	int	ret;
-
 	sem_wait(philo->my_meal);
 	if (!i_am_dead(table, philo))
 	{
 		broadcast_life_state(table, PRINT_EATING, 0);
 		philo->last_meal_start = philo->cur_time;
+		if ((++philo->meals_i_had == table->max_meals))
+			sem_post(table->check_full);
 		sem_post(philo->my_meal);
 		philo_sleep(milisec_epoch() + table->to_eat);
 	}
@@ -39,15 +39,11 @@ int	time_to_eat(t_table *table, t_philo *philo)
 	{
 		sem_post(philo->my_meal);
 		the_end_of_life(table);
+		return (0);
 	}
-	sem_wait(philo->my_meal);
-	ret = !philo->died;
-	if ((++philo->meals_i_had * ret == table->max_meals))
-		sem_post(table->check_full);
 	sem_post(table->forks);
 	sem_post(table->forks);
-	sem_post(philo->my_meal);
-	return (ret);
+	return (1);
 }
 
 int	time_to_sleep(t_table *table, t_philo *philo)
