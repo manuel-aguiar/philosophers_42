@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 15:26:55 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 15:31:25 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	the_life_of_a_lonely_philo(t_table *table, t_philo *philo);
 void	the_life_of_a_philosopher(t_table *table, t_philo *philo)
 {
 	int	to_think;
-	
+
 	if (!the_beginning_of_life(table, philo))
 		return ;
 	if (table->num_seats == 1)
