@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:23:49 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 11:58:39 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 15:50:37 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ typedef struct s_table
 {
 	t_philo				*philos;
 	pthread_t			*threads;
-	pthread_mutex_t		*forks;
-	pthread_mutex_t		check_death;
-	pthread_mutex_t		start_execution;
+	pthread_mutex_t		**forks;
+	pthread_mutex_t		*check_death;
+	pthread_mutex_t		*start_execution;
 	bool				init_failed;
 	int					last_good_thread;
 	time_t				open_time;
