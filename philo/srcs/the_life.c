@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_life.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:26 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/17 22:53:16 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/18 14:07:00 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,26 @@ void	*the_life_of_a_philosopher(void *my_struct)
 {
 	t_philo	*philo;
 	t_table	*table;
+	int		to_think;
 
 	philo = (t_philo *)my_struct;
 	table = philo->table;
 	if (!the_beginning_of_life(table))
 		return (NULL);
-	usleep(TACTICAL_WAIT * philo->my_id & 1);
 	pthread_mutex_lock(&table->check_death);
 	philo->last_meal_start = milisec_epoch();
+	to_think = (table->to_die - table->to_eat - table->to_sleep) / 5;
 	pthread_mutex_unlock(&table->check_death);
 	if (table->num_seats == 1)
 		return (the_life_of_a_lonely_philo(table, philo));
+	if (philo->my_id % 2 == 0)
+		philo_sleep(table, milisec_epoch() + to_think * -(~((to_think >> 31) & 1)));
 	while (1)
 	{
 		if (!take_first_fork(table, philo) || !take_second_fork(table, philo)
 			|| !time_to_eat(table, philo) || !time_to_sleep(table, philo)
 			|| !time_to_think(table, philo))
 			break ;
-		usleep(TACTICAL_WAIT * (1 + (philo->my_id >> 31 & 1)));
 	}
 	return (NULL);
 }

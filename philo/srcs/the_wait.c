@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_wait.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:46 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/17 22:30:28 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/18 14:10:41 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,22 @@ int	time_to_sleep(t_table *table, t_philo *philo)
 
 int	time_to_think(t_table *table, t_philo *philo)
 {
+	int	think;
+	
 	pthread_mutex_lock(&table->check_death);
 	if (!table->exit_table)
+	{
 		broadcast_life_state(table, philo, PRINT_THINKING, 0);
+		think = (table->to_die + philo->last_meal_start - philo->cur_time) / 5;
+		pthread_mutex_unlock(&table->check_death);
+		if (!philo_sleep(table, milisec_epoch() + think))
+			return (0);
+		return (1);
+	}	
 	else
 	{
 		pthread_mutex_unlock(&table->check_death);
 		return (0);
 	}
-	pthread_mutex_unlock(&table->check_death);
 	return (1);
 }
