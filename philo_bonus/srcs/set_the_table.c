@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_the_table.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 15:38:55 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 19:41:12 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	prepare_forks_and_ids(t_table *table)
 	int	i;
 
 	table->philo.self_monitor = 0;
-	table->philo.died = (table->to_die == 0);
 	table->philo.last_meal_start = 0;
 	table->philo.meals_i_had = 0;
 	i = 0;

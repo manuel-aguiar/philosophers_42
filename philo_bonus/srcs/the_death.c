@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_death.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:18:47 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/17 15:13:25 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 19:41:09 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@ int	i_am_dead(t_table *table, t_philo *philo)
 	{
 		philo->cur_time = milisec_epoch();
 		if (philo->cur_time - philo->last_meal_start >= table->to_die)
-		{
-			philo->died = 1;
 			return (1);
-		}
 	}
 	return (0);
 }
@@ -43,10 +40,7 @@ void	*monitor_my_own_death(void *mytable)
 	table = (t_table *)mytable;
 	philo = &table->philo;
 	if (table->to_die == 0)
-	{
-		philo->died = 1;
 		return (the_end_of_life(table));
-	}
 	while (1)
 	{
 		sem_wait(philo->my_meal);
