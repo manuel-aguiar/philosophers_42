@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:26 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 14:07:00 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 14:16:52 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	*the_life_of_a_philosopher(void *my_struct)
 	if (table->num_seats == 1)
 		return (the_life_of_a_lonely_philo(table, philo));
 	if (philo->my_id % 2 == 0)
-		philo_sleep(table, milisec_epoch() + to_think * -(~((to_think >> 31) & 1)));
+		philo_sleep(table, milisec_epoch() + to_think);
 	while (1)
 	{
 		if (!take_first_fork(table, philo) || !take_second_fork(table, philo)
