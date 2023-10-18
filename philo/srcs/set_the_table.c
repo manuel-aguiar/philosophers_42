@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 15:52:50 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 16:02:37 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	prepare_threads_and_ids(t_table *table)
 	{
 		table->philos[i].table = table;
 		table->philos[i].my_id = i + 1;
-		table->philos[i].first_fork = table->forks[i];
-		table->philos[i].second_fork = table->forks[(i + 1) * \
+		table->philos[i].first_fork = &table->forks[i];
+		table->philos[i].second_fork = &table->forks[(i + 1) * \
 			(i + 1 != table->num_seats)];
 		if (i % 2)
 			fork_swap(&table->philos[i].first_fork,
@@ -54,15 +54,13 @@ int	table_place_forks_and_detectors(t_table *table)
 
 	memset(table->philos, '\0', sizeof(*table->philos) * table->num_seats);
 	memset(table->forks, '\0', sizeof(*table->forks) * table->num_seats);
-	memset(&table->check_death, '\0', sizeof(table->check_death));
-	memset(&table->start_execution, '\0', sizeof(table->start_execution));
-	if (pthread_mutex_init(table->start_execution, NULL)
-		|| pthread_mutex_init(table->check_death, NULL))
+	if (pthread_mutex_init(&table->start_execution, NULL)
+		|| pthread_mutex_init(&table->check_death, NULL))
 		return (write_stderr("philo: pthread_mutex_init: failed\n"));
 	i = 0;
 	while (i < table->num_seats)
 	{
-		if (pthread_mutex_init(table->forks[i], NULL))
+		if (pthread_mutex_init(&table->forks[i], NULL))
 			return (write_stderr("philo: pthread_mutex_init: failed\n"));
 		i++;
 	}
@@ -76,8 +74,8 @@ int	prepare_table(t_table *table, int ac, char **av)
 	table->threads = NULL;
 	table->forks = NULL;
 	table->philos = NULL;
-	table->check_death = NULL;
-	table->start_execution = NULL;
+	memset(&table->check_death, '\0', sizeof(table->check_death));
+	memset(&table->start_execution, '\0', sizeof(table->start_execution));
 	if (!is_atoi_positive_and_int(av[1], &table->num_seats)
 		|| !is_atoi_positive_and_int(av[2], &table->to_die)
 		|| !is_atoi_positive_and_int(av[3], &table->to_eat)
@@ -119,12 +117,10 @@ int	clean_table(t_table *table)
 	{
 		i = 0;
 		while (i < table->num_seats)
-			pthread_mutex_destroy(table->forks[i++]);
+			pthread_mutex_destroy(&table->forks[i++]);
 		ft_free_set_null(&table->forks);
 	}
-	if (table->check_death)
-		pthread_mutex_destroy(table->check_death);
-	if (table->start_execution)
-		pthread_mutex_destroy(table->start_execution);
+	pthread_mutex_destroy(&table->check_death);
+	pthread_mutex_destroy(&table->start_execution);
 	return (0);
 }
