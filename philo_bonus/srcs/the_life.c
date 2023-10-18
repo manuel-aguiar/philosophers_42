@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_life.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/17 21:16:21 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/18 11:26:31 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static int	the_beginning_of_life(t_table *table, t_philo *philo)
 	usleep(philo->my_id * 100);
 	sem_wait(philo->my_meal);
 	sem_wait(philo->my_death_check);
+	philo_sleep(table->open_time);
 	if (pthread_create(&philo->self_monitor, NULL, monitor_my_own_death,
 			table))
 	{

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/17 14:52:45 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 11:31:22 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <unistd.h>
 
 # define TACTICAL_WAIT 1000
+# define START_MULTI  150 / 100
 
 # define PRINT_FORK "has taken a fork"
 # define PRINT_EATING "is eating"
@@ -106,6 +107,7 @@ int				take_first_fork(t_table *table, t_philo *philo);
 int				take_second_fork(t_table *table, t_philo *philo);
 
 /* the_wait.c */
+int				philo_sleep(time_t end_sleep);
 int				time_to_eat(t_table *table, t_philo *philo);
 int				time_to_sleep(t_table *table, t_philo *philo);
 int				time_to_think(t_table *table, t_philo *philo);
