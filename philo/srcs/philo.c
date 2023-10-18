@@ -3,20 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:24:04 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/17 22:54:47 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/18 16:26:09 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	a_philosopher_has_died(t_table *table)
+int	either_a_philospher_died_or_all_are_full(t_table *table)
 {
 	int	i;
 
 	pthread_mutex_lock(&table->check_death);
+	if (table->finished_eating == table->num_seats)
+	{
+		pthread_mutex_unlock(&table->check_death);
+		return (1);
+	}
 	table->cur_time = milisec_epoch();
 	i = 0;
 	while (i < table->num_seats)
@@ -39,22 +44,6 @@ int	a_philosopher_has_died(t_table *table)
 	return (0);
 }
 
-int	all_philos_are_full(t_table *table)
-{
-	int	res;
-
-	res = 0;
-	if (table->max_meals == -1)
-		return (res);
-	pthread_mutex_lock(&table->check_death);
-	if (table->finished_eating == table->num_seats)
-	{
-		res = 1;
-		table->exit_table = 1;
-	}
-	pthread_mutex_unlock(&table->check_death);
-	return (res);
-}
 
 int	open_hell_s_kitchen(t_table *table)
 {
@@ -73,7 +62,7 @@ int	open_hell_s_kitchen(t_table *table)
 	pthread_mutex_unlock(&table->start_execution);
 	while (1)
 	{
-		if (a_philosopher_has_died(table) || all_philos_are_full(table))
+		if (either_a_philospher_died_or_all_are_full(table))
 			break ;
 		usleep(TACTICAL_WAIT);
 	}

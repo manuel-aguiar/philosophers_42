@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:46 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 15:28:19 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 16:19:55 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ int	update_meals(t_table *table, t_philo *philo)
 	ret = !table->exit_table;
 	table->finished_eating += (++philo->meals_i_had == table->max_meals) \
 		* ret;
+	if (table->finished_eating == table->num_seats)
+	{
+		table->exit_table = 1;
+		ret = !table->exit_table;
+	}
 	pthread_mutex_unlock(philo->second_fork);
 	pthread_mutex_unlock(philo->first_fork);
 	pthread_mutex_unlock(&table->check_death);
