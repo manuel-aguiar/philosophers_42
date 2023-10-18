@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/17 14:49:05 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 15:38:55 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	prepare_table(t_table *table, int ac, char **av)
 		|| !is_atoi_positive_and_int(av[4], &table->to_sleep) || ((ac == 6)
 			&& !is_atoi_positive_and_int(av[5], &table->max_meals)))
 		return (write_stderr("philo_bonus: argument is not an unsigned int\n"));
+	if (!table->num_seats)
+		return (0);
 	table->philo_pids = malloc(sizeof(*table->philo_pids) * (table->num_seats));
 	if (!table->philo_pids)
 		return (write_stderr("philo_bonus: malloc: failed\n"));
