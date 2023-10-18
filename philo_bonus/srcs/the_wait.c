@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 15:10:22 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 15:26:43 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	time_to_think(t_table *table, t_philo *philo)
 		to_think = (table->to_die + philo->last_meal_start \
 		- philo->cur_time) / 5;
 		sem_post(philo->my_meal);
-		philo_sleep(milisec_epoch() + to_think);
+		philo_sleep(milisec_epoch() + to_think + (to_think <= 0));
 		return (1);
 	}
 	else
