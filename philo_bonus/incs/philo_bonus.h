@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 11:31:22 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 11:39:54 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@
 # include <unistd.h>
 
 # define TACTICAL_WAIT 1000
-# define START_MULTI  150 / 100
+# define START_NUM 150
+# define START_DIV 100
 
 # define PRINT_FORK "has taken a fork"
 # define PRINT_EATING "is eating"

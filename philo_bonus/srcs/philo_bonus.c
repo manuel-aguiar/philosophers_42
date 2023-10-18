@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:32:06 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 11:32:18 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/18 11:40:04 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	open_hell_s_kitchen(t_table *table)
 	if (table->max_meals == 0)
 		return (1);
 	table->open_time = milisec_epoch() + (table->num_seats \
-	* TACTICAL_WAIT * START_MULTI) / 1000;
+	* TACTICAL_WAIT * START_NUM / START_DIV) / 1000;
 	sem_wait(table->check_death);
 	if (!prepare_forks_and_ids(table))
 	{
