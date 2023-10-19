@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/19 16:19:47 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/19 16:23:23 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	time_to_think(t_table *table, t_philo *philo)
 	{
 		broadcast_life_state(table, PRINT_THINKING, 0);
 		to_think = (table->to_die + philo->last_meal_start \
-		- philo->cur_time  + (table->to_eat - table->to_sleep) \
+		- philo->cur_time + (table->to_eat - table->to_sleep) \
 		* (table->to_eat > table->to_sleep)) / 5;
 		sem_post(philo->my_meal);
 		philo_sleep(milisec_epoch() + to_think + (to_think <= 0));
