@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 20:08:43 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/19 17:11:55 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	the_life_of_a_philosopher(t_table *table, t_philo *philo)
 		return ;
 	to_think = (table->to_die - table->to_eat - table->to_sleep) / 5;
 	if (philo->my_id % 2 == 0)
-		philo_sleep(milisec_epoch() + to_think + (to_think <= 0));
+		philo_sleep(table, philo, \
+		milisec_epoch() + to_think + (to_think <= 0), true);
 	while (1)
 	{
 		if (!take_first_fork(table, philo) || !take_second_fork(table, philo)
@@ -38,13 +39,13 @@ void	the_life_of_a_philosopher(t_table *table, t_philo *philo)
 static int	the_life_of_a_lonely_philo(t_table *table, t_philo *philo)
 {
 	sem_wait(philo->my_death_check);
-	philo_sleep(table->open_time);
+	philo_sleep(table, philo, table->open_time, false);
 	philo->last_meal_start = milisec_epoch();
 	sem_post(philo->my_death_check);
 	if (!i_am_dead(table, philo))
 	{
 		broadcast_life_state(table, PRINT_FORK, 0);
-		philo_sleep(milisec_epoch() + table->to_die);
+		philo_sleep(table, philo, milisec_epoch() + table->to_die, true);
 		sem_post(philo->my_meal);
 		the_end_of_life(table);
 	}
@@ -84,7 +85,7 @@ static int	the_beginning_of_life(t_table *table, t_philo *philo)
 	sem_wait(philo->my_death_check);
 	open = table->open_time;
 	sem_post(philo->my_death_check);
-	philo_sleep(table->open_time);
+	philo_sleep(table, philo, table->open_time, false);
 	sem_wait(philo->my_death_check);
 	if (pthread_create(&philo->self_monitor, NULL, monitor_my_own_death,
 			table))
