@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 19:42:21 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/18 20:08:43 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ static int	philo_set_semaphores(t_table *table, t_philo *philo)
 
 static int	the_beginning_of_life(t_table *table, t_philo *philo)
 {
+	time_t	open;
+
 	sem_wait(table->check_full);
 	sem_wait(table->someone_died);
 	if (!philo_set_semaphores(table, philo))
@@ -80,7 +82,10 @@ static int	the_beginning_of_life(t_table *table, t_philo *philo)
 	if (table->num_seats == 1)
 		return (the_life_of_a_lonely_philo(table, philo));
 	sem_wait(philo->my_death_check);
+	open = table->open_time;
+	sem_post(philo->my_death_check);
 	philo_sleep(table->open_time);
+	sem_wait(philo->my_death_check);
 	if (pthread_create(&philo->self_monitor, NULL, monitor_my_own_death,
 			table))
 	{

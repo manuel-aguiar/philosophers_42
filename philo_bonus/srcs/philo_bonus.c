@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:32:06 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 11:47:20 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/19 16:20:42 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	*full_monitor(void *mytable)
 	i = -1;
 	while (++i < table->num_seats)
 		sem_wait(table->check_full);
+	sem_wait(table->check_death);
 	sem_post(table->someone_died);
 	return (NULL);
 }
@@ -46,6 +47,7 @@ void	*death_monitor(void *mytable)
 	table = (t_table *)mytable;
 	sem_wait(table->someone_died);
 	philocide(table);
+	sem_post(table->check_death);
 	i = -1;
 	while (++i < table->num_seats)
 		sem_post(table->check_full);
