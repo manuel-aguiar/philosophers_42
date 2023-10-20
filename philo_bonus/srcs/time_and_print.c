@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time_and_print.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:27 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/16 23:20:03 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/20 10:03:56 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ time_t	milisec_epoch(void)
 
 int	broadcast_life_state(t_table *table, char *state, time_t time_elapsed)
 {
-	sem_wait(table->check_death);
+	sem_wait(table->main_table_print);
 	if (!time_elapsed)
 	{
 		table->philo.cur_time = milisec_epoch();
 		time_elapsed = table->philo.cur_time - table->open_time;
 	}
 	printf("%-10ld %-5d %s\n", time_elapsed, table->philo.my_id, state);
-	sem_post(table->check_death);
+	sem_post(table->main_table_print);
 	return (1);
 }
 

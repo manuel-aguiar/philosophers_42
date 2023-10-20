@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   set_the_table.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/18 19:41:12 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/20 10:03:56 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
 static int	prepare_table_semaphores(t_table *table);
-static void	clean_table_close_semaphores(t_table *table);
 
 int	prepare_forks_and_ids(t_table *table)
 {
@@ -61,25 +60,25 @@ int	prepare_table(t_table *table, int ac, char **av)
 	return (1);
 }
 
-int	clean_table(t_table *table, bool is_main, int exit_status)
+int	clean_table(t_table *table, bool init_success, int exit_status)
 {
-	if (is_main)
+	if (init_success)
 	{
 		if (table->death_monitor)
 			pthread_join(table->death_monitor, NULL);
 		if (table->full_monitor)
 			pthread_join(table->full_monitor, NULL);
 	}
-	else
-	{
-		sem_close(table->philo.my_death_check);
-		sem_close(table->philo.my_meal);
-		if (*(table->philo.meal_name))
-			sem_unlink(table->philo.meal_name);
-	}
 	if (table->philo_pids)
 		free(table->philo_pids);
-	clean_table_close_semaphores(table);
+	sem_close(table->forks);
+	sem_close(table->main_table_print);
+	sem_close(table->check_full);
+	sem_close(table->someone_died);
+	sem_unlink(SEMAFORK);
+	sem_unlink(SEMADEATH);
+	sem_unlink(SEMAFULL);
+	sem_unlink(SEMADIED);
 	exit(exit_status);
 	return (1);
 }
@@ -93,7 +92,7 @@ static int	prepare_table_semaphores(t_table *table)
 	sem_unlink(SEMADIED);
 	table->forks = sem_open(SEMAFORK, O_CREAT, 0644,
 			table->num_seats);
-	table->check_death = sem_open(SEMADEATH, O_CREAT, 0644, 1);
+	table->main_table_print = sem_open(SEMADEATH, O_CREAT, 0644, 1);
 	table->check_full = sem_open(SEMAFULL, O_CREAT, 0644,
 			table->num_seats);
 	table->someone_died = sem_open(SEMADIED, O_CREAT, 0644,
@@ -101,21 +100,9 @@ static int	prepare_table_semaphores(t_table *table)
 	table->death_monitor = 0;
 	table->full_monitor = 0;
 	if (table->forks == SEM_FAILED
-		|| table->check_death == SEM_FAILED
+		|| table->main_table_print == SEM_FAILED
 		|| table->check_full == SEM_FAILED
 		|| table->someone_died == SEM_FAILED)
 		return (write_stderr("philo_bonus: sem_open: failed\n"));
 	return (1);
-}
-
-static void	clean_table_close_semaphores(t_table *table)
-{
-	sem_close(table->forks);
-	sem_close(table->check_death);
-	sem_close(table->check_full);
-	sem_close(table->someone_died);
-	sem_unlink(SEMAFORK);
-	sem_unlink(SEMADEATH);
-	sem_unlink(SEMAFULL);
-	sem_unlink(SEMADIED);
 }

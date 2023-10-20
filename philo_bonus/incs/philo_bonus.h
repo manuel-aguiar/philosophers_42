@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/19 17:10:05 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/20 10:05:22 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ typedef struct s_philo
 	pthread_t	self_monitor;
 	int			my_id;
 	int			meals_i_had;
-	sem_t		*my_death_check;
-	sem_t		*my_meal;
+	sem_t		*my_table_print;
+	sem_t		*my_death;
 	char		meal_name[17];
 	time_t		last_meal_start;
 	time_t		cur_time;
@@ -64,7 +64,7 @@ typedef struct s_table
 	pthread_t	death_monitor;
 	pid_t		*philo_pids;
 	sem_t		*forks;
-	sem_t		*check_death;
+	sem_t		*main_table_print;
 	sem_t		*check_full;
 	sem_t		*someone_died;
 	time_t		open_time;
@@ -91,7 +91,7 @@ int				open_hell_s_kitchen(t_table *table);
 
 /* set_the_table.c */
 int				prepare_table(t_table *table, int ac, char **av);
-int				clean_table(t_table *table, bool is_main, int exit_status);
+int				clean_table(t_table *table, bool init_success, int exit_status);
 int				prepare_forks_and_ids(t_table *table);
 
 /* the_life.c */

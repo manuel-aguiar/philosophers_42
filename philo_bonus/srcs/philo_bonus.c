@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:32:06 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/19 16:20:42 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/20 10:03:56 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	*full_monitor(void *mytable)
 	i = -1;
 	while (++i < table->num_seats)
 		sem_wait(table->check_full);
-	sem_wait(table->check_death);
+	sem_wait(table->main_table_print);
 	sem_post(table->someone_died);
 	return (NULL);
 }
@@ -47,7 +47,7 @@ void	*death_monitor(void *mytable)
 	table = (t_table *)mytable;
 	sem_wait(table->someone_died);
 	philocide(table);
-	sem_post(table->check_death);
+	sem_post(table->main_table_print);
 	i = -1;
 	while (++i < table->num_seats)
 		sem_post(table->check_full);
@@ -62,7 +62,7 @@ int	open_hell_s_kitchen(t_table *table)
 		return (1);
 	table->open_time = milisec_epoch() + (table->num_seats \
 	* TACTICAL_WAIT * START_NUM / START_DIV) / 1000;
-	sem_wait(table->check_death);
+	sem_wait(table->main_table_print);
 	if (!prepare_forks_and_ids(table))
 	{
 		philocide(table);
@@ -77,22 +77,26 @@ int	open_hell_s_kitchen(t_table *table)
 		philocide(table);
 		return (0);
 	}
-	sem_post(table->check_death);
+	sem_post(table->main_table_print);
 	return (1);
 }
 
 int	main(int ac, char **av)
 {
 	t_table	table;
+	int		status;
 
 	if (ac < 5 || ac > 6)
 	{
 		write_stderr("philo_bonus: invalid number of arguments\n");
-		return (0);
+		return (EXIT_FAILURE);
 	}
+	status = EXIT_SUCCESS;
 	if (prepare_table(&table, ac, av))
 		open_hell_s_kitchen(&table);
-	clean_table(&table, true, EXIT_SUCCESS);
+	else
+		status = EXIT_FAILURE;
+	clean_table(&table, !status, status);
 	return (0);
 }
 
