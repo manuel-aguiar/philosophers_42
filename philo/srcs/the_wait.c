@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_wait.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:46 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/19 16:55:51 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/20 09:42:34 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	time_to_think(t_table *table, t_philo *philo)
 		broadcast_life_state(table, philo, PRINT_THINKING, 0);
 		to_think = (table->to_die + philo->last_meal_start \
 		- philo->cur_time) / 5 + (table->to_eat - table->to_sleep) \
-		* (table->to_eat > table->to_sleep);
+		* (table->to_eat > table->to_sleep) * (table->num_seats % 2);
 		pthread_mutex_unlock(&table->check_death);
 		if (!philo_sleep(table, milisec_epoch() + to_think + (to_think <= 0)))
 			return (0);
