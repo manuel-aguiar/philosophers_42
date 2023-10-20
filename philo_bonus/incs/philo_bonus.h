@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/20 10:05:22 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/20 10:39:28 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,8 @@ int				take_first_fork(t_table *table, t_philo *philo);
 int				take_second_fork(t_table *table, t_philo *philo);
 
 /* the_wait.c */
-int				philo_sleep(t_table *table, t_philo *philo, time_t end_sleep, bool in_game);
+int				philo_sleep(t_table *table, t_philo *philo, \
+				time_t end_sleep, bool in_game);
 int				time_to_eat(t_table *table, t_philo *philo);
 int				time_to_sleep(t_table *table, t_philo *philo);
 int				time_to_think(t_table *table, t_philo *philo);
