@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:39 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/20 10:14:37 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/24 11:40:27 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,3 +44,37 @@ int	take_second_fork(t_table *table, t_philo *philo)
 	pthread_mutex_unlock(&table->check_death);
 	return (1);
 }
+
+/*
+
+Tests to show fork stealing:
+
+take_first_fork
+before lock:
+	printf("%-10ld %-5d wanting to grab fork %d\n", milisec_epoch() 
+	- table->open_time, philo->my_id, philo->my_id * (philo->my_id % 2 == 1) 
+	+ ((philo->my_id + 1) * (philo->my_id != table->num_seats) + 1 * 
+	(philo->my_id == table->num_seats))  * (philo->my_id % 2 == 0)) ;
+
+after lock:
+	printf("%-10ld %-5d managed to get fork %d\n", milisec_epoch() 
+	- table->open_time, philo->my_id, philo->my_id * (philo->my_id % 2 == 1) 
+	+ ((philo->my_id + 1) * (philo->my_id != table->num_seats) + 1 * 
+	(philo->my_id == table->num_seats))  * (philo->my_id % 2 == 0)) ;
+
+
+take_second_fork
+before lock:
+	printf("%-10ld %-5d wanting to grab fork %d\n", milisec_epoch() 
+	- table->open_time, philo->my_id, philo->my_id * (philo->my_id % 2 == 0) 
+	+ ((philo->my_id + 1) * (philo->my_id != table->num_seats) + 1 * 
+	(philo->my_id == table->num_seats))  * (philo->my_id % 2 == 1)) ;
+
+
+after lock:
+	printf("%-10ld %-5d managed to get fork %d\n", milisec_epoch() 
+	- table->open_time, philo->my_id, philo->my_id * (philo->my_id % 2 == 0) 
+	+ ((philo->my_id + 1) * (philo->my_id != table->num_seats) + 1 * 
+	(philo->my_id == table->num_seats))  * (philo->my_id % 2 == 1)) ;
+
+*/
