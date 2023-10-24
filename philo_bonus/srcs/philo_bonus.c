@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:32:06 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/20 10:03:56 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/24 11:49:33 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int	main(int ac, char **av)
 	status = EXIT_SUCCESS;
 	if (prepare_table(&table, ac, av))
 		open_hell_s_kitchen(&table);
+	else if (table.num_seats == 0)
+		status = EXIT_SUCCESS;
 	else
 		status = EXIT_FAILURE;
 	clean_table(&table, !status, status);
