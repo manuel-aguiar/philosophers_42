@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/25 11:47:11 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/25 12:01:47 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int	philo_sleep(t_table *table, t_philo *philo, time_t end_sleep, bool in_game)
 {
-	time_t time;
-
 	while (1)
 	{
 		if (in_game)
@@ -29,8 +27,7 @@ int	philo_sleep(t_table *table, t_philo *philo, time_t end_sleep, bool in_game)
 			}
 			sem_post(philo->my_death);
 		}
-		time = milisec_epoch();
-		if (time >= end_sleep)
+		if (milisec_epoch() >= end_sleep)
 			break ;
 		usleep(TACTICAL_WAIT);
 	}

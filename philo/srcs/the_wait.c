@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:46 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/25 11:46:35 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/25 12:02:13 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	time_to_think(t_table *table, t_philo *philo)
 		broadcast_life_state(table, philo, PRINT_THINKING, 0);
 		to_think = (table->to_eat - table->to_sleep) \
 		* (table->to_eat > table->to_sleep);
-		to_think += (table->to_die + philo->last_meal_start 
+		to_think += (table->to_die + philo->last_meal_start \
 		- philo->cur_time - to_think) / 5;
 		save_cur = philo->cur_time;
 		pthread_mutex_unlock(&table->check_death);
