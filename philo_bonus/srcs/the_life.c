@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/20 10:04:52 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/25 11:53:12 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,12 @@ static int	the_life_of_a_lonely_philo(t_table *table, t_philo *philo);
 
 void	the_life_of_a_philosopher(t_table *table, t_philo *philo)
 {
-	int	to_think;
+	int	to_wait;
 
 	if (!the_beginning_of_life(table, philo))
 		return ;
-	to_think = (table->to_die - table->to_eat - table->to_sleep) / 5;
-	if (philo->my_id % 2 == 0)
-		philo_sleep(table, philo, \
-		milisec_epoch() + to_think + (to_think <= 0), true);
+	to_wait = (table->to_eat / 2) * (philo->my_id % 2 != 0);
+	philo_sleep(table, philo, milisec_epoch() + to_wait, true);
 	while (1)
 	{
 		take_first_fork(table, philo);

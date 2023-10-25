@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/24 11:35:45 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/25 11:47:11 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	philo_sleep(t_table *table, t_philo *philo, time_t end_sleep, bool in_game)
 {
+	time_t time;
+
 	while (1)
 	{
 		if (in_game)
@@ -27,7 +29,8 @@ int	philo_sleep(t_table *table, t_philo *philo, time_t end_sleep, bool in_game)
 			}
 			sem_post(philo->my_death);
 		}
-		if (milisec_epoch() >= end_sleep)
+		time = milisec_epoch();
+		if (time >= end_sleep)
 			break ;
 		usleep(TACTICAL_WAIT);
 	}
@@ -48,7 +51,6 @@ int	time_to_eat(t_table *table, t_philo *philo)
 		{
 			sem_post(table->forks);
 			sem_post(table->forks);
-			sem_post(philo->my_death);
 			return (0);
 		}
 	}
@@ -85,15 +87,15 @@ int	time_to_sleep(t_table *table, t_philo *philo)
 
 int	time_to_think(t_table *table, t_philo *philo)
 {
-	int	to_think;
-	int	save_cur;
+	time_t	to_think;
+	time_t	save_cur;
 
 	sem_wait(philo->my_death);
 	if (!i_am_dead(table, philo))
 	{
 		broadcast_life_state(table, PRINT_THINKING, 0);
 		to_think = (table->to_eat - table->to_sleep) \
-		* (table->to_eat > table->to_sleep) * (table->num_seats % 2);
+		* (table->to_eat > table->to_sleep);
 		to_think += (table->to_die + philo->last_meal_start \
 		- philo->cur_time - to_think) / 5;
 		save_cur = philo->cur_time;
