@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:26:26 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/20 10:37:10 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/25 11:46:26 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*the_life_of_a_philosopher(void *my_struct)
 {
 	t_philo	*philo;
 	t_table	*table;
-	int		to_think;
+	int		to_wait;
 
 	philo = (t_philo *)my_struct;
 	table = philo->table;
@@ -26,12 +26,11 @@ void	*the_life_of_a_philosopher(void *my_struct)
 		return (NULL);
 	pthread_mutex_lock(&table->check_death);
 	philo->last_meal_start = milisec_epoch();
-	to_think = (table->to_die - table->to_eat - table->to_sleep) / 5;
+	to_wait = (table->to_eat / 2) * (philo->my_id % 2 != 0);
 	pthread_mutex_unlock(&table->check_death);
 	if (table->num_seats == 1)
 		return (the_life_of_a_lonely_philo(table, philo));
-	if (philo->my_id % 2 == 0)
-		philo_sleep(table, milisec_epoch() + to_think + (to_think <= 0));
+	philo_sleep(table, milisec_epoch() + to_wait);
 	while (1)
 	{
 		if (!take_first_fork(table, philo) || !take_second_fork(table, philo)
