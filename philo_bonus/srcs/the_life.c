@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/25 11:53:12 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/25 12:30:25 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	the_life_of_a_philosopher(t_table *table, t_philo *philo)
 
 	if (!the_beginning_of_life(table, philo))
 		return ;
-	to_wait = (table->to_eat / 2) * (philo->my_id % 2 != 0);
+	to_wait = (table->to_eat / 2 + (table->to_eat <= 1)) \
+	* (philo->my_id % 2 != 0);
 	philo_sleep(table, philo, milisec_epoch() + to_wait, true);
 	while (1)
 	{
