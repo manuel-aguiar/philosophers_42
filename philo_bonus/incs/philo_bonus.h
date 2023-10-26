@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:25:01 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/25 09:58:39 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/26 14:56:57 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define PRINT_DEATH "died"
 
 # define SEMAFORK "semafork"
-# define SEMADEATH "semadeath"
+# define SEMAPRINT "semaprint"
 # define SEMAEXEC "semaexec"
 # define SEMAFULL "semafull"
 # define SEMADIED "semadied"

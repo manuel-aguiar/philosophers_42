@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/25 12:30:25 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/26 14:56:38 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	the_life_of_a_lonely_philo(t_table *table, t_philo *philo)
 
 static int	philo_set_semaphores(t_table *table, t_philo *philo)
 {
-	philo->my_table_print = sem_open(SEMADEATH, O_CREAT, 0644, 1);
+	philo->my_table_print = sem_open(SEMAPRINT, O_CREAT, 0644, 1);
 	ft_strcpy(philo->meal_name, SEMAMEAL);
 	positive_int_to_str(&philo->meal_name[6], philo->my_id);
 	sem_unlink(philo->meal_name);

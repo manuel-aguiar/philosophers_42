@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:33:22 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/20 10:03:56 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/26 14:56:38 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	clean_table(t_table *table, bool init_success, int exit_status)
 	sem_close(table->check_full);
 	sem_close(table->someone_died);
 	sem_unlink(SEMAFORK);
-	sem_unlink(SEMADEATH);
+	sem_unlink(SEMAPRINT);
 	sem_unlink(SEMAFULL);
 	sem_unlink(SEMADIED);
 	exit(exit_status);
@@ -86,13 +86,13 @@ int	clean_table(t_table *table, bool init_success, int exit_status)
 static int	prepare_table_semaphores(t_table *table)
 {
 	sem_unlink(SEMAFORK);
-	sem_unlink(SEMADEATH);
+	sem_unlink(SEMAPRINT);
 	sem_unlink(SEMAEXEC);
 	sem_unlink(SEMAFULL);
 	sem_unlink(SEMADIED);
 	table->forks = sem_open(SEMAFORK, O_CREAT, 0644,
 			table->num_seats);
-	table->main_table_print = sem_open(SEMADEATH, O_CREAT, 0644, 1);
+	table->main_table_print = sem_open(SEMAPRINT, O_CREAT, 0644, 1);
 	table->check_full = sem_open(SEMAFULL, O_CREAT, 0644,
 			table->num_seats);
 	table->someone_died = sem_open(SEMADIED, O_CREAT, 0644,
