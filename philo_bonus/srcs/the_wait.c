@@ -6,7 +6,7 @@
 /*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:27:36 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/26 18:54:47 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/10/26 18:57:16 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int	time_to_eat(t_table *table, t_philo *philo)
 		sem_post(philo->my_death);
 		if (!philo_sleep(table, philo, milisec_epoch() + table->to_eat, true))
 		{
-			sem_post(philo->my_forks);
-			sem_post(philo->my_forks);
+			sem_post(table->forks);
+			sem_post(table->forks);
 			return (0);
 		}
 	}
@@ -57,8 +57,8 @@ int	time_to_eat(t_table *table, t_philo *philo)
 		the_end_of_life(table);
 		return (0);
 	}
-	sem_post(philo->my_forks);
-	sem_post(philo->my_forks);
+	sem_post(table->forks);
+	sem_post(table->forks);
 	return (1);
 }
 
