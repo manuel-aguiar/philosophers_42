@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_life.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/26 15:24:33 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/26 18:53:01 by mmaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,18 @@ static int	the_life_of_a_lonely_philo(t_table *table, t_philo *philo)
 
 static int	philo_set_semaphores(t_table *table, t_philo *philo)
 {
+	sem_close(table->main_table_print);
+	sem_close(table->forks);
 	philo->my_table_print = sem_open(SEMAPRINT, O_CREAT, 0644, 1);
+	philo->my_forks = sem_open(SEMAFORK, O_CREAT, 0644,
+			table->num_seats);
 	ft_strcpy(philo->meal_name, SEMAMEAL);
 	positive_int_to_str(&philo->meal_name[6], philo->my_id);
 	sem_unlink(philo->meal_name);
 	philo->my_death = sem_open(philo->meal_name, O_CREAT, 0644, 1);
 	if (philo->my_death == SEM_FAILED \
-	|| philo->my_table_print == SEM_FAILED)
+	|| philo->my_table_print == SEM_FAILED \
+	|| philo->my_forks == SEM_FAILED)
 	{
 		write_stderr("philo_bonus: sem_open: failed\n");
 		sem_post(table->someone_died);
