@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:24:04 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/20 10:14:34 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/26 15:43:48 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,50 @@ int	table_warns_someone_died(t_table *table, int index)
 	table->exit_table = 1;
 	broadcast_life_state(table, &table->philos[index], PRINT_DEATH,
 		table->cur_time - table->open_time);
-	pthread_mutex_unlock(&table->check_death);
 	return (1);
+}
+
+int	a_philo_died(t_table *table)
+{
+	time_t	time_since_death;
+	int		philo_index;
+	int		i;
+
+	philo_index = -1;
+	table->cur_time = milisec_epoch();
+	i = 0;
+	while (i < table->num_seats)
+	{
+		if (table->philos[i].last_meal_start != 0 && \
+		table->cur_time - table->philos[i].last_meal_start >= table->to_die)
+		{
+			if (philo_index == -1 || table->cur_time \
+			- table->philos[i].last_meal_start < time_since_death)
+			{
+				philo_index = i;
+				time_since_death = table->cur_time \
+				- table->philos[i].last_meal_start;
+			}
+		}
+		i++;
+	}
+	if (philo_index == -1)
+		return (0);
+	return (table_warns_someone_died(table, philo_index));
 }
 
 int	either_a_philospher_died_or_all_are_full(t_table *table)
 {
-	int	i;
-
 	pthread_mutex_lock(&table->check_death);
 	if (table->finished_eating == table->num_seats)
 	{
 		pthread_mutex_unlock(&table->check_death);
 		return (1);
 	}
-	table->cur_time = milisec_epoch();
-	i = 0;
-	while (i < table->num_seats)
+	if (a_philo_died(table))
 	{
-		if (table->philos[i].last_meal_start != 0)
-		{
-			if (table->cur_time
-				- table->philos[i].last_meal_start >= table->to_die)
-				return (table_warns_someone_died(table, i));
-		}
-		i++;
+		pthread_mutex_unlock(&table->check_death);
+		return (1);
 	}
 	pthread_mutex_unlock(&table->check_death);
 	return (0);
