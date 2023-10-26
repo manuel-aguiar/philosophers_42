@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:31:13 by codespace         #+#    #+#             */
-/*   Updated: 2023/10/26 14:56:38 by codespace        ###   ########.fr       */
+/*   Updated: 2023/10/26 15:13:04 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static int	the_life_of_a_lonely_philo(t_table *table, t_philo *philo)
 	{
 		broadcast_life_state(table, PRINT_FORK, 0);
 		philo_sleep(table, philo, milisec_epoch() + table->to_die, true);
-		sem_post(philo->my_death);
 		the_end_of_life(table);
 	}
 	else
@@ -77,9 +76,9 @@ static int	the_beginning_of_life(t_table *table, t_philo *philo)
 	sem_wait(table->someone_died);
 	if (!philo_set_semaphores(table, philo))
 		return (0);
-	sem_wait(philo->my_death);
 	if (table->num_seats == 1)
 		return (the_life_of_a_lonely_philo(table, philo));
+	sem_wait(philo->my_death);
 	sem_wait(philo->my_table_print);
 	open = table->open_time;
 	sem_post(philo->my_table_print);
